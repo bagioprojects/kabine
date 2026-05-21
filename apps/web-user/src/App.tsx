@@ -2091,63 +2091,63 @@ function App() {
                     </div>
                     <span style={{ fontSize: '0.75rem', fontWeight: 800, fontFamily: 'monospace', color: user.happiness < 30 ? 'hsl(var(--accent-red))' : 'hsl(var(--accent-purple))' }}>%{user.happiness}</span>
                   </div>
-                </div>
-              </div>
 
-              {/* Right Group: Varlıklar & Etki */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                {/* Siyasi Nüfuz */}
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '0.4rem', 
-                  background: 'rgba(6, 182, 212, 0.05)', 
-                  border: '1px solid rgba(6, 182, 212, 0.15)',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
-                  boxShadow: '0 0 10px rgba(6, 182, 212, 0.02)'
-                }}>
-                  <Award size={14} style={{ color: 'hsl(var(--accent-cyan))', filter: 'drop-shadow(0 0 3px rgba(6, 182, 212, 0.3))' }} />
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Nüfuz:</span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'white' }}>
-                    {user.politicalInfluence} <span style={{ fontSize: '0.65rem', color: 'hsl(var(--text-muted))', fontWeight: 600 }}>PTS</span>
-                  </span>
-                </div>
+                  {/* Görsel Seperatör (Ayrım Çizgisi) */}
+                  <div style={{ width: '1px', height: '16px', backgroundColor: 'rgba(255, 255, 255, 0.15)', margin: '0 0.25rem' }} />
 
-                {/* Cüzdan Nakit */}
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '0.4rem', 
-                  background: 'rgba(245, 158, 11, 0.05)', 
-                  border: '1px solid rgba(245, 158, 11, 0.15)',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
-                  boxShadow: '0 0 10px rgba(245, 158, 11, 0.02)'
-                }}>
-                  <Coins size={14} style={{ color: 'hsl(var(--accent-gold))', filter: 'drop-shadow(0 0 3px rgba(245, 158, 11, 0.3))' }} />
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Cüzdan:</span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'hsl(var(--accent-gold))' }}>
-                    ₺{user.cash.toLocaleString('tr-TR')}
-                  </span>
-                </div>
+                  {/* Siyasi Nüfuz */}
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.4rem', 
+                    background: 'rgba(6, 182, 212, 0.05)', 
+                    border: '1px solid rgba(6, 182, 212, 0.15)',
+                    padding: '0.25rem 0.6rem',
+                    borderRadius: '6px',
+                    boxShadow: '0 0 10px rgba(6, 182, 212, 0.02)'
+                  }}>
+                    <Award size={14} style={{ color: 'hsl(var(--accent-cyan))', filter: 'drop-shadow(0 0 3px rgba(6, 182, 212, 0.3))' }} />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Nüfuz:</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'white' }}>
+                      {user.politicalInfluence} <span style={{ fontSize: '0.65rem', color: 'hsl(var(--text-muted))', fontWeight: 600 }}>PTS</span>
+                    </span>
+                  </div>
 
-                {/* Vadesiz Banka Hesabı */}
-                <div style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '0.4rem', 
-                  background: 'rgba(16, 185, 129, 0.05)', 
-                  border: '1px solid rgba(16, 185, 129, 0.15)',
-                  padding: '0.25rem 0.6rem',
-                  borderRadius: '6px',
-                  boxShadow: '0 0 10px rgba(16, 185, 129, 0.02)'
-                }}>
-                  <Wallet size={14} style={{ color: 'hsl(var(--accent-emerald))', filter: 'drop-shadow(0 0 3px rgba(16, 185, 129, 0.3))' }} />
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Vadesiz:</span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'hsl(var(--accent-emerald))' }}>
-                    ₺{user.bankCheckingBalance.toLocaleString('tr-TR')}
-                  </span>
+                  {/* Cüzdan Nakit */}
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.4rem', 
+                    background: 'rgba(245, 158, 11, 0.05)', 
+                    border: '1px solid rgba(245, 158, 11, 0.15)',
+                    padding: '0.25rem 0.6rem',
+                    borderRadius: '6px',
+                    boxShadow: '0 0 10px rgba(245, 158, 11, 0.02)'
+                  }}>
+                    <Coins size={14} style={{ color: 'hsl(var(--accent-gold))', filter: 'drop-shadow(0 0 3px rgba(245, 158, 11, 0.3))' }} />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Cüzdan:</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'hsl(var(--accent-gold))' }}>
+                      ₺{user.cash.toLocaleString('tr-TR')}
+                    </span>
+                  </div>
+
+                  {/* Vadesiz Banka Hesabı */}
+                  <div style={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: '0.4rem', 
+                    background: 'rgba(16, 185, 129, 0.05)', 
+                    border: '1px solid rgba(16, 185, 129, 0.15)',
+                    padding: '0.25rem 0.6rem',
+                    borderRadius: '6px',
+                    boxShadow: '0 0 10px rgba(16, 185, 129, 0.02)'
+                  }}>
+                    <Wallet size={14} style={{ color: 'hsl(var(--accent-emerald))', filter: 'drop-shadow(0 0 3px rgba(16, 185, 129, 0.3))' }} />
+                    <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'hsl(var(--text-secondary))' }}>Vadesiz:</span>
+                    <span style={{ fontSize: '0.8rem', fontWeight: 800, fontFamily: 'monospace', color: 'hsl(var(--accent-emerald))' }}>
+                      ₺{user.bankCheckingBalance.toLocaleString('tr-TR')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
