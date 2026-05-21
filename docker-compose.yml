@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: politic-db
+    environment:
+      POSTGRES_USER: politic_user
+      POSTGRES_PASSWORD: politic_password
+      POSTGRES_DB: politic_db
+    ports:
+      - "5440:5432"
+    volumes:
+      - politic_pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: politic-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - politic_redisdata:/data
+    restart: unless-stopped
+
+volumes:
+  politic_pgdata:
+  politic_redisdata:

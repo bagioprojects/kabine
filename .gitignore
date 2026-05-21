@@ -1,0 +1,60 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Output directories
+dist/
+build/
+out/
+.next/
+.expo/
+.turbo/
+web-build/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Environment variables / Local secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+*.env.*
+!.env.example
+
+# Local SQLite databases or other caches
+*.db
+*.sqlite
+
+# Local configurations / logs / temporary files
+.npm/
+.yarn-cache/
+.eslintcache
+.parcel-cache
+.cache/
+.temp/
+temp/
+tmp/

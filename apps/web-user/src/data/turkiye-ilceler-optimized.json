@@ -1,0 +1,886 @@
+{
+  "Kırklareli": {
+    "name": "Kırklareli",
+    "transform": "translate(346.000000, 0.000000)",
+    "districts": {
+      "Demirköy": {
+        "name": "Demirköy",
+        "transform": "translate(167.558824, 41.311111)",
+        "type": "polygon",
+        "points": "11.3675442 22.6888889 0.372069107 30.6888889 10.3679556 54.6888889 36.3572604 73.6888889 88.33587 78.6888889 135.316536 101.688889 118.323529 51.6888889 137.315714 41.6888889 133.317359 10.6888889 102.330111 10.6888889 91.334636 0.688888889 78.3399835 18.6888889 54.349856 7.68888889"
+      }
+    }
+  },
+  "Tekirdağ": {
+    "name": "Tekirdağ",
+    "transform": "translate(286.000000, 188.000000)",
+    "districts": {
+      "Hayrabolu": {
+        "name": "Hayrabolu",
+        "transform": "translate(45.243619, 52.484150)",
+        "type": "polygon",
+        "points": "151.358726 45.320923 134.393041 36.3388245 109.443505 14.3825836 94.4737835 12.3865617 76.5101174 13.3845727 50.5625997 0.410430365 30.6029707 5.4004851 16.6312304 3.40446321 27.6090263 33.3447916 21.6211376 54.3030215 0.663527203 75.2612514 42.5787481 102.207547 43.5767295 123.165777 58.5464513 116.1797 69.5242472 117.177711 82.4980061 96.2194813 124.413227 71.2692076 106.449561 52.3069996"
+      }
+    }
+  },
+  "Edirne": {
+    "name": "Edirne",
+    "transform": "translate(114.000000, 22.000000)",
+    "districts": {
+      "Lalapaşa": {
+        "name": "Lalapaşa",
+        "transform": "translate(164.056338, 0.000000)",
+        "type": "polygon",
+        "points": "105.597951 0 105.597951 29.9615877 39.6824584 68.9116517 0.732394366 46.9398207 7.7234315 14.9807939 28.6965429 8.98847631"
+      }
+    }
+  },
+  "Çanakkale": {
+    "name": "Çanakkale",
+    "transform": "translate(0.000000, 439.000000)",
+    "districts": {
+      "Gelibolu": {
+        "name": "Gelibolu",
+        "transform": "translate(189.884892, 0.000000)",
+        "type": "polygon",
+        "points": "163.942027 4 114.965984 0 100.97283 29 117.964518 51 104.970874 62 91.9772299 58 75.9850527 73 7.01878885 97 0.0222113571 115 14.0153663 156 57.9938535 125 60.9923867 114 79.983097 104 78.9835859 94 157.944961 63 145.950828 47 163.942027 22"
+      }
+    }
+  },
+  "Balıkesir": {
+    "name": "Balıkesir",
+    "transform": "translate(215.000000, 480.000000)",
+    "districts": {
+      "Marmara": {
+        "name": "Marmara",
+        "transform": "translate(270.389931, 0.000000)",
+        "type": "polygon",
+        "points": "54.40578 16.9545804 20.4271518 31.9145043 0.439723424 22.9385499 4.43720909 2.99198477 32.4196088 0"
+      }
+    }
+  },
+  "Bursa": {
+    "name": "Bursa",
+    "transform": "translate(621.000000, 533.000000)",
+    "districts": {
+      "Karacabey": {
+        "name": "Karacabey",
+        "transform": "translate(0.000000, 46.281356)",
+        "type": "polygon",
+        "points": "25 0.756421457 24 12.7660667 0 43.7909837 8 62.8062555 6 78.8191158 9 91.8295649 10 96.8335838 20 105.840818 56 113.847248 96 74.8159008 92 65.8086668 138 78.8191158 146 49.7958064 124 32.7821422 129 17.7700856"
+      }
+    }
+  },
+  "Kütahya": {
+    "name": "Kütahya",
+    "transform": "translate(734.000000, 764.000000)",
+    "districts": {
+      "Domaniç": {
+        "name": "Domaniç",
+        "transform": "translate(208.515081, 0.000000)",
+        "type": "polygon",
+        "points": "97.4217429 15.9905604 9.43991113 0 0.44176924 38.9769909 38.4339239 71.9575217 100.421124 68.9592916"
+      }
+    }
+  },
+  "Bilecik": {
+    "name": "Bilecik",
+    "transform": "translate(1032.000000, 565.000000)",
+    "districts": {
+      "Bozüyük": {
+        "name": "Bozüyük",
+        "transform": "translate(6.000000, 175.000000)",
+        "type": "polygon",
+        "points": "84 4 74 0 63 18 0 20 2 40 5 93 19 99 64 115 81 114 63 91 73 65 94 54 121 52 116 34 95 24"
+      }
+    }
+  },
+  "Eskişehir": {
+    "name": "Eskişehir",
+    "transform": "translate(1101.000000, 698.000000)",
+    "districts": {
+      "İnönü": {
+        "name": "İnönü",
+        "transform": "translate(0.000000, 93.944752)",
+        "type": "polygon",
+        "points": "64.9708562 1.9988245 57.9739948 0 30.9861007 1.9988245 9.99551634 12.9923593 0 38.9770778 17.9919294 61.9635596 52.9762366 61.9635596 55.9748915 39.97649 68.9690627 18.9888328"
+      }
+    }
+  },
+  "Afyonkarahisar": {
+    "name": "Afyonkarahisar",
+    "transform": "translate(981.000000, 993.000000)",
+    "districts": {
+      "İhsaniye": {
+        "name": "İhsaniye",
+        "transform": "translate(164.883375, 10.637119)",
+        "type": "polygon",
+        "points": "120.990715 24.336297 94.0026015 27.3340184 79.0092052 5.35072826 60.0175698 0.35452596 13.0382614 37.326423 0.04398463 75.2975605 59.0180101 102.277053 119.991155 84.2907247 125.988514 69.3021178 119.991155 53.3142704"
+      }
+    }
+  },
+  "Uşak": {
+    "name": "Uşak",
+    "transform": "translate(754.000000, 1096.000000)",
+    "districts": {
+      "Banaz": {
+        "name": "Banaz",
+        "transform": "translate(193.000000, 0.000000)",
+        "type": "polygon",
+        "points": "117 6 80 1 43 0 0 21 9 34 38 43 39 86 71 100 84 133 106 112 100 87 132 61 127 32 105 23"
+      }
+    }
+  },
+  "Manisa": {
+    "name": "Manisa",
+    "transform": "translate(335.000000, 895.000000)",
+    "districts": {
+      "Demirci": {
+        "name": "Demirci",
+        "transform": "translate(330.834606, 106.055556)",
+        "type": "polygon",
+        "points": "90.0256666 27.9444444 80.0289855 0.944444444 36.0435889 4.94444444 0.0555371169 98.9444444 13.0512225 120.944444 11.0518863 131.944444 23.0479035 125.944444 25.0472397 128.944444 8.05288196 146.944444 9.05255006 151.944444 26.0469078 148.944444 25.0472397 151.944444 41.0419294 148.944444 63.0346277 155.944444 71.0319726 113.944444 117.016705 89.9444444 155.004093 90.9444444 157.00343 81.9444444 140.009072 70.9444444 145.007412 56.9444444 116.017037 25.9444444"
+      }
+    }
+  },
+  "Aydın": {
+    "name": "Aydın",
+    "transform": "translate(277.000000, 1341.000000)",
+    "districts": {
+      "Kuyucak": {
+        "name": "Kuyucak",
+        "transform": "translate(373.693023, 8.995392)",
+        "type": "polygon",
+        "points": "62.3069767 4.99021213 47.3069767 0.994325323 26.3069767 36.9573066 0.306976744 46.9470237 8.30697674 89.9028069 25.3069767 77.9151464 71.3069767 95.8966371 83.3069767 95.8966371 84.3069767 61.9315992 64.3069767 27.9665613 73.3069767 16.9778726"
+      }
+    }
+  },
+  "Denizli": {
+    "name": "Denizli",
+    "transform": "translate(688.000000, 1240.000000)",
+    "districts": {
+      "Buldan": {
+        "name": "Buldan",
+        "transform": "translate(24.851302, 67.981444)",
+        "type": "polygon",
+        "points": "63.2561204 -0.000276958 30.2158369 17.9947378 12.1938641 44.9872599 0.17921551 46.986706 11.1926433 58.9833825 43.2317061 84.9761816 81.2780932 83.9764585 93.2927418 74.9789512 94.2939625 60.9828286"
+      }
+    }
+  },
+  "Burdur": {
+    "name": "Burdur",
+    "transform": "translate(882.000000, 1464.000000)",
+    "districts": {
+      "Altınyayla": {
+        "name": "Altınyayla",
+        "transform": "translate(0.000000, 237.000000)",
+        "type": "polygon",
+        "points": "0 26 15 0 70 9 78 39 62 47 26 74 11 76 8 68 21 46 10 37 8 31"
+      }
+    }
+  },
+  "Isparta": {
+    "name": "Isparta",
+    "transform": "translate(1081.000000, 1254.000000)",
+    "districts": {
+      "Keçiborlu": {
+        "name": "Keçiborlu",
+        "transform": "translate(0.000000, 144.000000)",
+        "type": "polygon",
+        "points": "0 91 28 44 45 20 83 0 99 6 100 54 91 70 82 66 50 76 18 84 12 100 4 100"
+      }
+    }
+  },
+  "Karaman": {
+    "name": "Karaman",
+    "transform": "translate(1717.000000, 1548.000000)",
+    "districts": {
+      "Ermenek": {
+        "name": "Ermenek",
+        "transform": "translate(6.000000, 255.000000)",
+        "type": "polygon",
+        "points": "20 175 135 147 170 111 161 108 163 104 170 104 178 113 190 117 186 124 195 128 202 119 140 70 126 17 86 0 80 3 60 17 83 78 104 95 124 109 116 116 118 132 109 118 105 118 89 104 59 107 9 121 0 163"
+      }
+    }
+  },
+  "Konya": {
+    "name": "Konya",
+    "transform": "translate(1405.000000, 1014.000000)",
+    "districts": {
+      "Taşkent": {
+        "name": "Taşkent",
+        "transform": "translate(282.000000, 760.000000)",
+        "type": "polygon",
+        "points": "0 43 18 13 105 0 116 32 96 46 57 66 30 75"
+      }
+    }
+  },
+  "Niğde": {
+    "name": "Niğde",
+    "transform": "translate(2142.000000, 1294.000000)",
+    "districts": {
+      "Altunhisar": {
+        "name": "Altunhisar",
+        "transform": "translate(0.000000, 76.000000)",
+        "type": "polygon",
+        "points": "0 60 68 0 92 18 119 58 84 79 21 67"
+      }
+    }
+  },
+  "Nevşehir": {
+    "name": "Nevşehir",
+    "transform": "translate(2176.000000, 960.000000)",
+    "districts": {
+      "Derinkuyu": {
+        "name": "Derinkuyu",
+        "transform": "translate(80.000000, 293.000000)",
+        "type": "polygon",
+        "points": "108 65 76 77 19 73 1.11022302e-16 59 42 29 74 28 91 0 99 9 91 36 108 53"
+      }
+    }
+  },
+  "Aksaray": {
+    "name": "Aksaray",
+    "transform": "translate(1923.000000, 1089.000000)",
+    "districts": {
+      "Güzelyurt": {
+        "name": "Güzelyurt",
+        "transform": "translate(250.000000, 221.000000)",
+        "type": "polygon",
+        "points": "58 0 73 39 37 60 0 29 17 2"
+      }
+    }
+  },
+  "Kırşehir": {
+    "name": "Kırşehir",
+    "transform": "translate(1990.000000, 836.000000)",
+    "districts": {
+      "Merkez": {
+        "name": "Merkez",
+        "transform": "translate(68.000000, 90.000000)",
+        "type": "polygon",
+        "points": "118 236 139 209 137 114 122 104 127 76 165 20 112 0 105 1 103 35 76 63 0 129 13 144 38 148 42 153 48 147 52 156 63 150 68 154 65 159 79 160 99 168 102 179 87 174 81 167 66 166 75 184 86 187"
+      }
+    }
+  },
+  "Kayseri": {
+    "name": "Kayseri",
+    "transform": "translate(2364.000000, 992.000000)",
+    "districts": {
+      "Yeşilhisar": {
+        "name": "Yeşilhisar",
+        "transform": "translate(0.000000, 260.000000)",
+        "type": "polygon",
+        "points": "45 0 1 36 0 54 0 66 24 68 41 121 91 134 115 110 98 80 107 36"
+      }
+    }
+  },
+  "Kırıkkale": {
+    "name": "Kırıkkale",
+    "transform": "translate(1939.000000, 654.000000)",
+    "districts": {
+      "Çelebi": {
+        "name": "Çelebi",
+        "transform": "translate(34.000000, 238.000000)",
+        "type": "polygon",
+        "points": "68 44 19 0 13 5 0 31 6 74 13 77 17 86"
+      }
+    }
+  },
+  "Yozgat": {
+    "name": "Yozgat",
+    "transform": "translate(2140.000000, 684.000000)",
+    "districts": {
+      "Yerköy": {
+        "name": "Yerköy",
+        "transform": "translate(0.000000, 86.000000)",
+        "type": "polygon",
+        "points": "38 15 6 23 0 36 19 66 52 87 95 96 127 137 128 145 117 146 120 165 136 173 146 148 167 128 176 100 163 82 104 49 80 0"
+      }
+    }
+  },
+  "Çorum": {
+    "name": "Çorum",
+    "transform": "translate(2112.000000, 323.000000)",
+    "districts": {
+      "Sungurlu": {
+        "name": "Sungurlu",
+        "transform": "translate(0.000000, 276.000000)",
+        "type": "polygon",
+        "points": "66 186 45 158 33 119 34 105 25 100 0 78 38 58 58 28 47 6 54 0 69 7 64 27 80 38 93 18 109 22 99 43 115 54 147 51 176 65 178 76 186 88 181 106 172 128 133 139 130 163 108 171"
+      }
+    }
+  },
+  "Amasya": {
+    "name": "Amasya",
+    "transform": "translate(2382.000000, 403.000000)",
+    "districts": {
+      "Göynücek": {
+        "name": "Göynücek",
+        "transform": "translate(97.000000, 185.000000)",
+        "type": "polygon",
+        "points": "0 96 22 96 35 66 110 30 85 0 64 10 38 1 3 50 10 68"
+      }
+    }
+  },
+  "Samsun": {
+    "name": "Samsun",
+    "transform": "translate(2346.000000, 185.000000)",
+    "districts": {
+      "Vezirköprü": {
+        "name": "Vezirköprü",
+        "transform": "translate(0.000000, 114.000000)",
+        "type": "path",
+        "d": "M0,59 L5,50 L13,48 L16,37 L24,39 L26,31 L23,25 L61,0 L61,6 L70,8 L72,24 L84,35 L91,50 L87,55 L90,58 L102,53 L118,59 L116,67 L122,68 L127,58 L140,56 L145,46 L166,44 L169,54 L165,68 L170,68 L181,46 L178,40 L179,35 L199,20 L218,46 L207,51 L195,94 L195,107 L162,122 L107,126 L93,127 L73,107 L55,104 L19,89 L0,59 Z M144,23 L137,33 L125,44 L110,47 L118,49 L128,47 L141,42 L148,34 L151,32 L144,23 Z"
+      }
+    }
+  },
+  "Çankırı": {
+    "name": "Çankırı",
+    "transform": "translate(1767.000000, 408.000000)",
+    "districts": {
+      "Kızılırmak": {
+        "name": "Kızılırmak",
+        "transform": "translate(310.000000, 195.000000)",
+        "type": "polygon",
+        "points": "82 2 48 0 26 20 20 44 0 58 35 74 74 54 93 24"
+      }
+    }
+  },
+  "Sinop": {
+    "name": "Sinop",
+    "transform": "translate(2192.000000, 66.000000)",
+    "districts": {
+      "Dikmen": {
+        "name": "Dikmen",
+        "transform": "translate(210.000000, 132.000000)",
+        "type": "polygon",
+        "points": "109 20 69 0 40 7 6 29 0 35 15 51 46 67 70 63 86 72 91 53"
+      }
+    }
+  },
+  "Kastamonu": {
+    "name": "Kastamonu",
+    "transform": "translate(1823.000000, 93.000000)",
+    "districts": {
+      "Çatalzeytin": {
+        "name": "Çatalzeytin",
+        "transform": "translate(325.000000, 13.000000)",
+        "type": "polygon",
+        "points": "44 9 8 0 6 16 16 50 0 65 13 84 53 80 58 50"
+      }
+    }
+  },
+  "Bartın": {
+    "name": "Bartın",
+    "transform": "translate(1649.000000, 149.000000)",
+    "districts": {
+      "Kurucaşile": {
+        "name": "Kurucaşile",
+        "transform": "translate(118.000000, 0.000000)",
+        "type": "polygon",
+        "points": "56 0 34 5 21 4 0 12 16 37 68 22"
+      }
+    }
+  },
+  "Karabük": {
+    "name": "Karabük",
+    "transform": "translate(1654.000000, 239.000000)",
+    "districts": {
+      "Eflani": {
+        "name": "Eflani",
+        "transform": "translate(171.000000, 0.000000)",
+        "type": "polygon",
+        "points": "68 4 28 0 10 5 21 22 8 35 0 58 16 79 23 98 36 104 44 73 86 58 93 49 77 45"
+      }
+    }
+  },
+  "Zonguldak": {
+    "name": "Zonguldak",
+    "transform": "translate(1454.000000, 233.000000)",
+    "districts": {
+      "Çaycuma": {
+        "name": "Çaycuma",
+        "transform": "translate(175.000000, 0.000000)",
+        "type": "polygon",
+        "points": "19 -8.52651283e-14 9 8 11 19 0 49 17 78 40 76 69 60 58 37 59 18"
+      }
+    }
+  },
+  "Düzce": {
+    "name": "Düzce",
+    "transform": "translate(1332.000000, 380.000000)",
+    "districts": {
+      "Akçakoca": {
+        "name": "Akçakoca",
+        "transform": "translate(34.000000, 0.000000)",
+        "type": "polygon",
+        "points": "88 0 38 6 8 12 12 29 0 55 9 56 35 52 56 42 86 44 121 33 110 29 100 12"
+      }
+    }
+  },
+  "Bolu": {
+    "name": "Bolu",
+    "transform": "translate(1247.000000, 413.000000)",
+    "districts": {
+      "Mengen": {
+        "name": "Mengen",
+        "transform": "translate(313.779070, 0.000000)",
+        "type": "polygon",
+        "points": "134.22093 4.99960317 117.22093 0 101.22093 2.9997619 7.22093023 8.99928571 0.220930233 39.9968254 42.2209302 74.9940476 56.2209302 73.994127 88.2209302 57.9953968 95.2209302 60.9951587 124.22093 62.995 146.22093 45.9963492 140.22093 14.9988095"
+      }
+    }
+  },
+  "Tokat": {
+    "name": "Tokat",
+    "transform": "translate(2501.000000, 457.000000)",
+    "districts": {
+      "Zile": {
+        "name": "Zile",
+        "transform": "translate(0.000000, 161.000000)",
+        "type": "polygon",
+        "points": "88 0 13 36 0 66 6 83 36 112 66 117 104 104 133 121 164 103 175 70 157 66 151 25"
+      }
+    }
+  },
+  "Ordu": {
+    "name": "Ordu",
+    "transform": "translate(2809.000000, 364.000000)",
+    "districts": {
+      "Akkuş": {
+        "name": "Akkuş",
+        "transform": "translate(0.000000, 71.000000)",
+        "type": "polygon",
+        "points": "1 16 0 28 17 38 53 72 119 78 129 12 95 0 51 2 10 17"
+      }
+    }
+  },
+  "Giresun": {
+    "name": "Giresun",
+    "transform": "translate(3142.000000, 371.000000)",
+    "districts": {
+      "Piraziz": {
+        "name": "Piraziz",
+        "transform": "translate(0.000000, 52.000000)",
+        "type": "polygon",
+        "points": "29 0 44 3 47 29 27 47 0 71 8 57 12 35 18 23"
+      }
+    }
+  },
+  "Trabzon": {
+    "name": "Trabzon",
+    "transform": "translate(3430.000000, 357.000000)",
+    "districts": {
+      "Şalpazarı": {
+        "name": "Şalpazarı",
+        "transform": "translate(0.000000, 50.000000)",
+        "type": "polygon",
+        "points": "15 0 22 61 15 56 0 22 1 2"
+      }
+    }
+  },
+  "Rize": {
+    "name": "Rize",
+    "transform": "translate(3734.000000, 252.000000)",
+    "districts": {
+      "İyidere": {
+        "name": "İyidere",
+        "transform": "translate(0.000000, 122.000000)",
+        "type": "polygon",
+        "points": "0 11 11 0 21 10 12 20"
+      }
+    }
+  },
+  "Sivas": {
+    "name": "Sivas",
+    "transform": "translate(2610.000000, 567.000000)",
+    "districts": {
+      "Koyulhisar": {
+        "name": "Koyulhisar",
+        "transform": "translate(435.000000, 0.000000)",
+        "type": "polygon",
+        "points": "143 0 101 13 96 46 67 56 54 44 44 46 42 68 22 61 1 39 8 66 0 78 17 112 46 111 97 141 121 103 112 80 116 77 123 82 127 79 121 64 150 24"
+      }
+    }
+  },
+  "Kahramanmaraş": {
+    "name": "Kahramanmaraş",
+    "transform": "translate(2715.000000, 1220.000000)",
+    "districts": {
+      "Elbistan": {
+        "name": "Elbistan",
+        "transform": "translate(215.000000, 0.000000)",
+        "type": "polygon",
+        "points": "76 0 8 10 0 156 83 164 167 167 192 124 159 78 55 37"
+      }
+    }
+  },
+  "Osmaniye": {
+    "name": "Osmaniye",
+    "transform": "translate(2626.000000, 1515.000000)",
+    "districts": {}
+  },
+  "Gaziantep": {
+    "name": "Gaziantep",
+    "transform": "translate(2791.000000, 1569.000000)",
+    "districts": {
+      "Nurdağı": {
+        "name": "Nurdağı",
+        "transform": "translate(39.000000, 74.000000)",
+        "type": "polygon",
+        "points": "77 2.27373675e-13 53 30 21 43 0 62 38 110 80 100 101 95 116 73 109 46 95 27 90 4"
+      }
+    }
+  },
+  "Şanlıurfa": {
+    "name": "Şanlıurfa",
+    "transform": "translate(3156.000000, 1391.000000)",
+    "districts": {
+      "Halfeti": {
+        "name": "Halfeti",
+        "transform": "translate(0.000000, 202.000000)",
+        "type": "polygon",
+        "points": "42 0 57 5 101 69 6 109 0 93 4 83 0 69 10 50 14 35"
+      }
+    }
+  },
+  "Kilis": {
+    "name": "Kilis",
+    "transform": "translate(2847.000000, 1738.000000)",
+    "districts": {
+      "Musabeyli": {
+        "name": "Musabeyli",
+        "transform": "translate(24.000000, 0.000000)",
+        "type": "polygon",
+        "points": "60 0 39 5 39 32 0 53 7 64 28 78 67 74 92 47 75 34 77 18 60 9"
+      }
+    }
+  },
+  "Adıyaman": {
+    "name": "Adıyaman",
+    "transform": "translate(3043.000000, 1335.000000)",
+    "districts": {
+      "Besni": {
+        "name": "Besni",
+        "transform": "translate(44.000000, 155.000000)",
+        "type": "polygon",
+        "points": "154 111 121 21 70 0 53 2 0 78 8 88 36 79 111 103 126 108"
+      }
+    }
+  },
+  "Malatya": {
+    "name": "Malatya",
+    "transform": "translate(2985.000000, 1021.000000)",
+    "districts": {
+      "Pütürge": {
+        "name": "Pütürge",
+        "transform": "translate(328.000000, 253.000000)",
+        "type": "polygon",
+        "points": "167 62 160 52 99 40 94 37 114 23 95 0 71 33 0 75 76 109 88 121 147 94"
+      }
+    }
+  },
+  "Elazığ": {
+    "name": "Elazığ",
+    "transform": "translate(3279.000000, 982.000000)",
+    "districts": {
+      "Ağın": {
+        "name": "Ağın",
+        "transform": "translate(48.000000, 83.000000)",
+        "type": "path",
+        "d": "M21,0 L43,6 L29,34 L19,35 L7,13 L21,0 Z M2,15 L21,48 L30,42 L45,52 L42,57 L19,55 L0,24 L2,15 Z"
+      }
+    }
+  },
+  "Erzincan": {
+    "name": "Erzincan",
+    "transform": "translate(3248.000000, 700.000000)",
+    "districts": {
+      "Kemaliye": {
+        "name": "Kemaliye",
+        "transform": "translate(11.000000, 237.000000)",
+        "type": "path",
+        "d": "M4,12 L13,31 L35,49 L37,60 L61,68 L70,82 L99,85 L100,125 L85,116 L58,90 L18,94 L3,87 L0,14 L4,12 Z M103.905335,88 L147.862394,50 L114.8946,33 L75.9326609,12 L50.9570591,16 L13.9931685,0 L7,9 L17.9892648,25 L41.9658425,45 L67.9404683,66 L74.9336368,76 L96.9121664,75 L103.905335,88 Z"
+      }
+    }
+  },
+  "Tunceli": {
+    "name": "Tunceli",
+    "transform": "translate(3363.000000, 847.000000)",
+    "districts": {
+      "Çemişgezek": {
+        "name": "Çemişgezek",
+        "transform": "translate(0.000000, 140.000000)",
+        "type": "polygon",
+        "points": "44 0 88 55 71 104 59 103 40 81 37 111 27 123 12 113 23 106 16 93 16 79 0 67 0 38"
+      }
+    }
+  },
+  "Gümüşhane": {
+    "name": "Gümüşhane",
+    "transform": "translate(3351.000000, 463.000000)",
+    "districts": {}
+  },
+  "Bayburt": {
+    "name": "Bayburt",
+    "transform": "translate(3578.000000, 523.000000)",
+    "districts": {
+      "Aydıntepe": {
+        "name": "Aydıntepe",
+        "transform": "translate(58.000000, 0.000000)",
+        "type": "polygon",
+        "points": "44 0 64 9 88 12 76 76 0 44 42 25"
+      }
+    }
+  },
+  "Erzurum": {
+    "name": "Erzurum",
+    "transform": "translate(3740.000000, 360.000000)",
+    "districts": {
+      "Pazaryolu": {
+        "name": "Pazaryolu",
+        "transform": "translate(48.000000, 144.000000)",
+        "type": "polygon",
+        "points": "62 1.11022302e-16 98 76 26 117 0 94 24 79 6 58 22 24"
+      }
+    }
+  },
+  "Bingöl": {
+    "name": "Bingöl",
+    "transform": "translate(3675.000000, 864.000000)",
+    "districts": {
+      "Yedisu": {
+        "name": "Yedisu",
+        "transform": "translate(69.000000, 0.000000)",
+        "type": "polygon",
+        "points": "104 0 51 1 0 37 8 48 31 54 45 40 135 54 141 29 110 33 94 22"
+      }
+    }
+  },
+  "Muş": {
+    "name": "Muş",
+    "transform": "translate(3969.000000, 841.000000)",
+    "districts": {
+      "Varto": {
+        "name": "Varto",
+        "transform": "translate(0.000000, 63.000000)",
+        "type": "polygon",
+        "points": "150 63 110 9 75 0 27 4 0 24 22 64 70 103 214 90 186 62"
+      }
+    }
+  },
+  "Mardin": {
+    "name": "Mardin",
+    "transform": "translate(3688.000000, 1455.000000)",
+    "districts": {
+      "Derik": {
+        "name": "Derik",
+        "transform": "translate(0.000000, 82.000000)",
+        "type": "polygon",
+        "points": "0 4 96 0 102 33 160 68 146 111 79 136 8 16"
+      }
+    }
+  },
+  "Batman": {
+    "name": "Batman",
+    "transform": "translate(3983.000000, 1162.000000)",
+    "districts": {
+      "Hasankeyf": {
+        "name": "Hasankeyf",
+        "transform": "translate(54.000000, 268.000000)",
+        "type": "polygon",
+        "points": "175 25 161 4 128 0 63 15 0 15 10 43 95 41 109 32 128 48"
+      }
+    }
+  },
+  "Diyarbakır": {
+    "name": "Diyarbakır",
+    "transform": "translate(3473.000000, 1119.000000)",
+    "districts": {
+      "Kulp": {
+        "name": "Kulp",
+        "transform": "translate(443.000000, 0.000000)",
+        "type": "polygon",
+        "points": "149 69 118 2 90 0 69 11 2 53 0 89 31 125 85 161 103 149 129 84"
+      }
+    }
+  },
+  "Şırnak": {
+    "name": "Şırnak",
+    "transform": "translate(4153.000000, 1393.000000)",
+    "districts": {
+      "Güçlükonak": {
+        "name": "Güçlükonak",
+        "transform": "translate(59.000000, 62.000000)",
+        "type": "polygon",
+        "points": "0 0 25 17 73 16 68 82 3 66 12 32"
+      }
+    }
+  },
+  "Hakkari": {
+    "name": "Hakkari",
+    "transform": "translate(4607.000000, 1335.000000)",
+    "districts": {
+      "Merkez": {
+        "name": "Merkez",
+        "transform": "translate(10.000000, 2.000000)",
+        "type": "polygon",
+        "points": "31 59 119 38 181 0 193 43 155 64 163 167 49 175 0 142"
+      }
+    }
+  },
+  "Siirt": {
+    "name": "Siirt",
+    "transform": "translate(4081.000000, 1267.000000)",
+    "districts": {
+      "Pervari": {
+        "name": "Pervari",
+        "transform": "translate(197.000000, 59.000000)",
+        "type": "polygon",
+        "points": "227 67 206 19 168 22 145 41 99 0 72 33 0 36 74 113 127 82 201 112"
+      }
+    }
+  },
+  "Bitlis": {
+    "name": "Bitlis",
+    "transform": "translate(4098.000000, 975.000000)",
+    "districts": {
+      "Hizan": {
+        "name": "Hizan",
+        "transform": "translate(218.000000, 269.000000)",
+        "type": "polygon",
+        "points": "130 104 126 27 106 6 90 3 75 30 27 0 0 46 61 82 107 123"
+      }
+    }
+  },
+  "Van": {
+    "name": "Van",
+    "transform": "translate(4422.000000, 829.000000)",
+    "districts": {
+      "Gevaş": {
+        "name": "Gevaş",
+        "transform": "translate(0.000000, 324.000000)",
+        "type": "polygon",
+        "points": "7 21 30 0 50 18 53 53 108 52 170 41 165 70 74 108 20 118 0 97"
+      }
+    }
+  },
+  "Ağrı": {
+    "name": "Ağrı",
+    "transform": "translate(4263.000000, 640.000000)",
+    "districts": {
+      "Patnos": {
+        "name": "Patnos",
+        "transform": "translate(101.000000, 233.000000)",
+        "type": "polygon",
+        "points": "130 5 78 0 0 29 44 141 99 105 142 57 148 15"
+      }
+    }
+  },
+  "Iğdır": {
+    "name": "Iğdır",
+    "transform": "translate(4505.000000, 587.000000)",
+    "districts": {}
+  },
+  "Artvin": {
+    "name": "Artvin",
+    "transform": "translate(3944.000000, 168.000000)",
+    "districts": {
+      "Arhavi": {
+        "name": "Arhavi",
+        "transform": "translate(13.000000, 66.000000)",
+        "type": "polygon",
+        "points": "0 18 15 0 54 8 48 74 21 57 12 32"
+      }
+    }
+  },
+  "Ardahan": {
+    "name": "Ardahan",
+    "transform": "translate(4227.000000, 127.000000)",
+    "districts": {
+      "Posof": {
+        "name": "Posof",
+        "transform": "translate(37.000000, 0.000000)",
+        "type": "polygon",
+        "points": "0 56 15 11 76 0 73 31 95 30 137 66 72 56 45 70 18 83"
+      }
+    }
+  },
+  "Kars": {
+    "name": "Kars",
+    "transform": "translate(4208.000000, 276.000000)",
+    "districts": {
+      "Arpaçay": {
+        "name": "Arpaçay",
+        "transform": "translate(228.000000, 0.000000)",
+        "type": "polygon",
+        "points": "82 10 134 42 100 74 101 115 78 142 46 129 43 107 0 63 33 41 49 0"
+      }
+    }
+  },
+  "Yalova": {
+    "name": "Yalova",
+    "transform": "translate(804.000000, 488.000000)",
+    "districts": {
+      "Armutlu": {
+        "name": "Armutlu",
+        "transform": "translate(0.000000, 36.585366)",
+        "type": "polygon",
+        "points": "56.936124 42.9430124 30.9652604 41.9489076 0 22.0668131 4.99439684 9.14345162 34.9607779 0.196509074 78.9114701 22.0668131"
+      }
+    }
+  },
+  "İzmit": {
+    "name": "İzmit",
+    "transform": "translate(948.000000, 342.000000)",
+    "districts": {
+      "Karamürsel": {
+        "name": "Karamürsel",
+        "transform": "translate(21.844548, 157.896431)",
+        "type": "polygon",
+        "points": "33.23259 4.32210159 69.28308 0.31670572 70.2844825 37.3666175 42.2452125 52.386852 13.2045399 51.3855031 0.186307442 51.3855031 16.2087474 12.3328933"
+      }
+    }
+  },
+  "Sakarya": {
+    "name": "Sakarya",
+    "transform": "translate(1096.000000, 349.000000)",
+    "districts": {
+      "Kaynarca": {
+        "name": "Kaynarca",
+        "transform": "translate(101.000000, 0.000000)",
+        "type": "path",
+        "d": "M19,0 C19.0000015,-1.75007142e-06 39,11 39,11 L51,40 L39,51 L48,63 L41,84 L28,86 L0,77 C0,77 18.9999985,1.75007142e-06 19,0 Z"
+      }
+    }
+  },
+  "Ankara": {
+    "name": "Ankara",
+    "transform": "translate(1321.000000, 530.000000)",
+    "districts": {
+      "Nallıhan": {
+        "name": "Nallıhan",
+        "transform": "translate(0.000000, 99.000000)",
+        "type": "polygon",
+        "points": "229 25 229 120 221 123 222 115 221 104 213 104 214 114 182 113 158 115 156 109 146 106 153 100 145 99 130 100 130 94 122 95 94 105 78 98 76 93 50 105 51 111 14 107 6 89 0 77 67 43 75 11 80 0 121 19 158 10 166 24 201 34"
+      }
+    }
+  },
+  "İzmir": {
+    "name": "İzmir",
+    "transform": "translate(88.000000, 895.000000)",
+    "districts": {
+      "Çeşme": {
+        "name": "Çeşme",
+        "transform": "translate(0.000000, 327.000000)",
+        "type": "polygon",
+        "points": "58 9 47 16 41 8 39 21 25 14 24 0 13 2 13 23 0 25 0 36 30 50 42 39 39 51 50 60 58 60 65 28"
+      }
+    }
+  },
+  "İstanbul": {
+    "name": "İstanbul",
+    "transform": "translate(613.000000, 196.000000)",
+    "districts": {}
+  }
+}
