@@ -115,9 +115,9 @@ export const AssetCard = React.memo<AssetCardProps>(({ asset, onEdit, onDelete, 
         {asset.modelType === 'glb' ? (
           isHovered ? (
             <ModelViewerWrapper
-              src={`http://localhost:3000${asset.fileUrl}`}
+              src={asset.fileUrl}
               alt={asset.name}
-              textureUrl={asset.textureUrl ? `http://localhost:3000${asset.textureUrl}` : null}
+              textureUrl={asset.textureUrl || null}
             />
           ) : (
             <div style={styles.hoverPromptContainer}>
@@ -144,14 +144,14 @@ export const AssetCard = React.memo<AssetCardProps>(({ asset, onEdit, onDelete, 
           </div>
           <div style={styles.specItem}>
             <span style={styles.specLabel}>Model Dosya:</span>
-            <a href={`http://localhost:3000${asset.fileUrl}`} target="_blank" rel="noreferrer" style={styles.fileLink}>
+            <a href={asset.fileUrl} target="_blank" rel="noreferrer" style={styles.fileLink}>
               <FileText size={11} style={{ marginRight: '2px' }} /> İndir
             </a>
           </div>
           {asset.textureUrl && (
             <div style={styles.specItem}>
               <span style={styles.specLabel}>Kaplama:</span>
-              <a href={`http://localhost:3000${asset.textureUrl}`} target="_blank" rel="noreferrer" style={styles.fileLink}>
+              <a href={asset.textureUrl} target="_blank" rel="noreferrer" style={styles.fileLink}>
                 Görsel
               </a>
             </div>

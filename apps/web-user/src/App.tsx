@@ -352,7 +352,7 @@ function App() {
     const token = localStorage.getItem('politic_token');
     if (!token) return;
     try {
-      const res = await fetch('http://localhost:3000/api/v1/politics/laws', {
+      const res = await fetch('/api/v1/politics/laws', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -662,7 +662,7 @@ function App() {
     const fetchProfile = async () => {
       if (!token) return;
       try {
-        const res = await fetch('http://localhost:3000/api/v1/users/me', {
+        const res = await fetch('/api/v1/users/me', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await res.json();
@@ -719,7 +719,7 @@ function App() {
     fetchProfile();
 
     // 2. Setup WebSocket connection for live price stream
-    const socket = socketIO('http://localhost:3000');
+    const socket = socketIO();
     
     socket.emit('join:market');
     
@@ -743,7 +743,7 @@ function App() {
       const activeToken = localStorage.getItem('politic_token');
       if (activeToken && document.visibilityState === 'visible') {
         try {
-          await fetch('http://localhost:3000/api/v1/users/heartbeat', {
+          await fetch('/api/v1/users/heartbeat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -772,7 +772,7 @@ function App() {
 
     const syncTimeout = setTimeout(async () => {
       try {
-        await fetch('http://localhost:3000/api/v1/users/sync-economy', {
+        await fetch('/api/v1/users/sync-economy', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -865,7 +865,7 @@ function App() {
     const token = localStorage.getItem('politic_token');
     if (!token) return;
 
-    const res = await fetch('http://localhost:3000/api/v1/users/setup-character', {
+    const res = await fetch('/api/v1/users/setup-character', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -1273,7 +1273,7 @@ function App() {
     if (!token) return;
 
     try {
-      const res = await fetch('http://localhost:3000/api/v1/politics/laws/vote', {
+      const res = await fetch('/api/v1/politics/laws/vote', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -48,7 +48,7 @@ export default function LawManager() {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('http://localhost:3000/api/v1/admin/laws', {
+      const response = await axios.get('/api/v1/admin/laws', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -73,7 +73,7 @@ export default function LawManager() {
     try {
       const token = localStorage.getItem('adminToken');
       const response = await axios.post(
-        'http://localhost:3000/api/v1/admin/laws',
+        '/api/v1/admin/laws',
         {
           title: newTitle,
           description: newDesc,
@@ -104,7 +104,7 @@ export default function LawManager() {
     try {
       const token = localStorage.getItem('adminToken');
       const response = await axios.put(
-        `http://localhost:3000/api/v1/admin/laws/${id}`,
+        `/api/v1/admin/laws/${id}`,
         { status, yesVotes, noVotes },
         { headers: { Authorization: `Bearer ${token}` } }
       );

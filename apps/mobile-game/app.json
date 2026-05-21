@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Kabine",
+    "slug": "kabine-mobile",
+    "scheme": "kabine-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "icon": "./src/assets/images/icon.png",
+    "splash": {
+      "image": "./src/assets/images/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#020617"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.bagiolabs.kabine"
+    },
+    "plugins": [
+      [
+        "./expo-plugins/withPlayGames",
+        {
+          "appId": "YOUR_PLAY_GAMES_APP_ID"
+        }
+      ],
+      "@react-native-google-signin/google-signin"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "4b10171a-f5fe-4c9d-9c0d-40fda8f5738f"
+      }
+    }
+  }
+}

@@ -23,7 +23,7 @@ export interface ModelAsset {
   createdAt: string;
 }
 
-const API_BASE = 'http://localhost:3000/api/v1/admin';
+const API_BASE = '/api/v1/admin';
 const ITEMS_PER_PAGE = 10;
 
 function getHeaders() {

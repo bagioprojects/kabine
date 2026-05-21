@@ -45,7 +45,7 @@ export default function LogisticsManager() {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('http://localhost:3000/api/v1/admin/trucks', {
+      const response = await axios.get('/api/v1/admin/trucks', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -76,7 +76,7 @@ export default function LogisticsManager() {
     try {
       const token = localStorage.getItem('adminToken');
       const response = await axios.post(
-        'http://localhost:3000/api/v1/admin/trucks',
+        '/api/v1/admin/trucks',
         {
           plateNumber: newPlate.toUpperCase(),
           model: newModel,

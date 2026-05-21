@@ -52,7 +52,7 @@ export default function AdminLogin() {
 
     try {
       // Login API çağrısı
-      const response = await axios.post('http://localhost:3000/api/v1/admin/login', {
+      const response = await axios.post('/api/v1/admin/login', {
         username: cleanUsername,
         password: password,
       });

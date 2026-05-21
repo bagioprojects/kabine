@@ -24,7 +24,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({ asset, onClose, onUp
       try {
         const materials = viewer.model?.materials;
         if (materials && materials.length > 0) {
-          const texture = await viewer.createTexture(`http://localhost:3000${asset.textureUrl}`);
+          const texture = await viewer.createTexture(asset.textureUrl);
           for (const mat of materials) {
             if (mat.pbrMetallicRoughness?.baseColorTexture) {
               await mat.pbrMetallicRoughness.baseColorTexture.setTexture(texture);
@@ -51,7 +51,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({ asset, onClose, onUp
       const formData = new FormData();
       formData.append('thumbnailUrl', base64Data);
       
-      const response = await fetch(`http://localhost:3000/api/v1/admin/model-assets/${asset.id}`, {
+      const response = await fetch(`/api/v1/admin/model-assets/${asset.id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
@@ -95,7 +95,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({ asset, onClose, onUp
             // @ts-ignore
             <model-viewer
               ref={viewerRef}
-              src={`http://localhost:3000${asset.fileUrl}`}
+              src={asset.fileUrl}
               alt={asset.name}
               auto-rotate
               camera-controls

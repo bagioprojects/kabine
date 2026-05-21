@@ -56,7 +56,7 @@ export default function UserManager() {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get(`http://localhost:3000/api/v1/admin/users?search=${query}`, {
+      const response = await axios.get(`/api/v1/admin/users?search=${query}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -99,7 +99,7 @@ export default function UserManager() {
     try {
       const token = localStorage.getItem('adminToken');
       const response = await axios.put(
-        `http://localhost:3000/api/v1/admin/users/${selectedUser.id}`,
+        `/api/v1/admin/users/${selectedUser.id}`,
         {
           cash: editCash,
           bankCheckingBalance: editChecking,
@@ -131,7 +131,7 @@ export default function UserManager() {
 
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.delete(`http://localhost:3000/api/v1/admin/users/${id}`, {
+      const response = await axios.delete(`/api/v1/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
 

@@ -1448,9 +1448,9 @@ export function MapEditorCanvas({
                 }}
               >
                 <MapGLBViewer
-                  src={`http://localhost:3000${item.fileUrl}`}
+                  src={item.fileUrl}
                   alt={item.name}
-                  textureUrl={item.textureUrl ? `http://localhost:3000${item.textureUrl}` : null}
+                  textureUrl={item.textureUrl || null}
                   rotationAngle={item.rotation}
                   opacity={item.opacity}
                   scale={item.scale}

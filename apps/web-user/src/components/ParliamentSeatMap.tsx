@@ -88,7 +88,7 @@ export const ParliamentSeatMap: React.FC<ParliamentSeatMapProps> = ({ userProvin
     }
 
     try {
-      const res = await fetch('http://localhost:3000/api/v1/politics/laws/propose', {
+      const res = await fetch('/api/v1/politics/laws/propose', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

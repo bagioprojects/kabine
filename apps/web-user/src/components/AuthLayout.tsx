@@ -46,7 +46,7 @@ export const AuthLayout: React.FC<AuthLayoutProps> = ({ onLoginSuccess }) => {
     e.preventDefault();
     setError(null);
 
-    const API_BASE = 'http://localhost:3000/api/v1';
+    const API_BASE = '/api/v1';
 
     const cleanUsername = username.trim().toLowerCase();
     const cleanPassword = password;

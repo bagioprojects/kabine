@@ -152,7 +152,7 @@ import {
   BuildingParams,
 } from './MapManager.constants';
 
-const API_BASE = 'http://localhost:3000/api/v1/admin';
+const API_BASE = '/api/v1/admin';
 
 function getAdminHeaders() {
   return { Authorization: `Bearer ${localStorage.getItem('adminToken')}` };

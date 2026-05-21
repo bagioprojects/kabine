@@ -31,7 +31,7 @@ export default function MarketManager() {
     fetchCommodities();
 
     // Sockets Bağlantısı
-    const socket = io('http://localhost:3000');
+    const socket = io();
     socket.emit('join:market');
 
     // Real-time fiyat güncellemesi dinleyicisi
@@ -53,7 +53,7 @@ export default function MarketManager() {
   const fetchCommodities = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('http://localhost:3000/api/v1/admin/commodities', {
+      const response = await axios.get('/api/v1/admin/commodities', {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.data.success) {
@@ -88,7 +88,7 @@ export default function MarketManager() {
     try {
       const token = localStorage.getItem('adminToken');
       const response = await axios.put(
-        `http://localhost:3000/api/v1/admin/commodities/${id}`,
+        `/api/v1/admin/commodities/${id}`,
         { currentPrice: newPrice },
         { headers: { Authorization: `Bearer ${token}` } }
       );

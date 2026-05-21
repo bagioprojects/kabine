@@ -55,7 +55,7 @@ export const PresidentPanelView: React.FC<PresidentPanelViewProps> = ({
     setLoadingReserves(true);
     try {
       const token = localStorage.getItem('politic_token');
-      const res = await fetch('http://localhost:3000/api/v1/economy/reserves', {
+      const res = await fetch('/api/v1/economy/reserves', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -79,7 +79,7 @@ export const PresidentPanelView: React.FC<PresidentPanelViewProps> = ({
     setTransacting(commodityId + '-' + action);
     try {
       const token = localStorage.getItem('politic_token');
-      const res = await fetch('http://localhost:3000/api/v1/economy/reserves/manage', {
+      const res = await fetch('/api/v1/economy/reserves/manage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -503,7 +503,7 @@ export function TilePalette({
                             {/* Texture thumbnail or icon */}
                             {a.textureUrl ? (
                               <img
-                                src={`http://localhost:3000${a.textureUrl}`}
+                                src={a.textureUrl}
                                 alt={a.name}
                                 style={{
                                   width: '36px', height: '36px', borderRadius: '6px',
@@ -540,9 +540,9 @@ export function TilePalette({
                               border: '1px solid rgba(168, 85, 247, 0.2)',
                             }}>
                               <PaletteGLBViewer
-                                src={`http://localhost:3000${a.fileUrl}`}
+                                src={a.fileUrl}
                                 alt={a.name}
-                                textureUrl={a.textureUrl ? `http://localhost:3000${a.textureUrl}` : null}
+                                textureUrl={a.textureUrl || null}
                               />
                             </div>
                           )}
