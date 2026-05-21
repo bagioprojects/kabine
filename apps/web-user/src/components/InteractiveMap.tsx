@@ -297,7 +297,7 @@ interface InteractiveMapProps {
   onMoveResidence: (province: string, district: string, cost: number, energyCost: number) => void;
 }
 
-export const InteractiveMap: React.FC<InteractiveMapProps> = ({
+const InteractiveMapComponent: React.FC<InteractiveMapProps> = ({
   currentProvince,
   currentDistrict,
   residenceProvince,
@@ -1641,3 +1641,5 @@ export const InteractiveMap: React.FC<InteractiveMapProps> = ({
     </div>
   );
 };
+
+export const InteractiveMap = React.memo(InteractiveMapComponent);

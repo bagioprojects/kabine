@@ -35,7 +35,7 @@ const OBJECTS: IsometricObject[] = [
   { id: 'board', name: 'Ülke Kriz Radarı', x: 4, y: 0, color: '#f8fafc', desc: 'Kriz Masası', flipX: true }
 ];
 
-export const PresidentIsometricOffice: React.FC<PresidentIsometricOfficeProps> = ({
+const PresidentIsometricOfficeComponent: React.FC<PresidentIsometricOfficeProps> = ({
   user,
   setUser,
   treasuryBalance,
@@ -1028,3 +1028,5 @@ export const PresidentIsometricOffice: React.FC<PresidentIsometricOfficeProps> =
     </div>
   );
 };
+
+export const PresidentIsometricOffice = React.memo(PresidentIsometricOfficeComponent);

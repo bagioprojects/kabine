@@ -58,7 +58,7 @@ interface ParliamentSeatMapProps {
   userRole?: string;
 }
 
-export const ParliamentSeatMap: React.FC<ParliamentSeatMapProps> = ({ userProvince = 'Yalova', userRole = 'VATANDAS' }) => {
+const ParliamentSeatMapComponent: React.FC<ParliamentSeatMapProps> = ({ userProvince = 'Yalova', userRole = 'VATANDAS' }) => {
   const [selectedProvince, setSelectedProvince] = useState<string>(userProvince);
   const [selectedParty, setSelectedParty] = useState<string | null>(null);
   const [hoveredSeat, setHoveredSeat] = useState<Seat | null>(null);
@@ -910,3 +910,5 @@ export const ParliamentSeatMap: React.FC<ParliamentSeatMapProps> = ({ userProvin
     </div>
   );
 };
+
+export const ParliamentSeatMap = React.memo(ParliamentSeatMapComponent);

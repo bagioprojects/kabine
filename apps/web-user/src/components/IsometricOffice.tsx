@@ -246,7 +246,7 @@ const AUTO_REPLIES_THEMED: { [key in 'coal' | 'auto' | 'defense']: { [key: strin
   }
 };
 
-export const IsometricOffice: React.FC<IsometricOfficeProps> = ({
+const IsometricOfficeComponent: React.FC<IsometricOfficeProps> = ({
   userCash,
   totalIncome,
   userProvince,
@@ -1596,3 +1596,5 @@ export const IsometricOffice: React.FC<IsometricOfficeProps> = ({
     </div>
   );
 };
+
+export const IsometricOffice = React.memo(IsometricOfficeComponent);

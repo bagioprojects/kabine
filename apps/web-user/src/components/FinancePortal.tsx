@@ -14,7 +14,7 @@ interface FinancePortalProps {
   onUpdateBalances: (newBalances: Partial<FinancePortalProps['balances']>, log: string) => void;
 }
 
-export const FinancePortal: React.FC<FinancePortalProps> = ({ balances, onUpdateBalances }) => {
+const FinancePortalComponent: React.FC<FinancePortalProps> = ({ balances, onUpdateBalances }) => {
   const [activeTab, setActiveTab] = useState<'summary' | 'transfer' | 'loans'>('summary');
   const [transferAmount, setTransferAmount] = useState<string>('');
   const [transferType, setTransferType] = useState<'deposit' | 'withdraw'>('deposit'); // to savings
@@ -392,3 +392,5 @@ export const FinancePortal: React.FC<FinancePortalProps> = ({ balances, onUpdate
     </GlassCard>
   );
 };
+
+export const FinancePortal = React.memo(FinancePortalComponent);

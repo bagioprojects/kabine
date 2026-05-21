@@ -20,7 +20,7 @@ interface EnterpriseManagerProps {
   isometricModelId?: string | null;
 }
 
-export const EnterpriseManager: React.FC<EnterpriseManagerProps> = ({
+const EnterpriseManagerComponent: React.FC<EnterpriseManagerProps> = ({
   userCash,
   coalMineLevel,
   autoFactoryLevel,
@@ -747,3 +747,5 @@ export const EnterpriseManager: React.FC<EnterpriseManagerProps> = ({
     </div>
   );
 };
+
+export const EnterpriseManager = React.memo(EnterpriseManagerComponent);

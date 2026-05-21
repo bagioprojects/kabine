@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { io as socketIO } from 'socket.io-client';
 import confetti from 'canvas-confetti';
 import { 
@@ -253,6 +253,464 @@ const INITIAL_ARCHIVED_LAWS = [
 ];
 import { PROVINCE_LOOKUP, DISTRICT_LOOKUP } from './data/locationData';
 
+interface LawItemProps {
+  law: any;
+  userRole: string;
+  onVoteLaw: (lawId: string | number, voteType: 'yes' | 'no') => void;
+}
+
+const LawItem = React.memo(({ law, userRole, onVoteLaw }: LawItemProps) => {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const diff = law.timestamp - now;
+    if (diff <= 0) return;
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [law.timestamp, now]);
+
+  const diff = law.timestamp - now;
+  const isExpired = diff <= 0;
+  
+  let timeLeftStr = 'Süre Doldu';
+  if (!isExpired) {
+    const hours = Math.floor(diff / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    timeLeftStr = `${hours}s ${minutes}d ${seconds}s kaldı`;
+  }
+  
+  const hasVoted = law.voted !== null;
+
+  return (
+    <div style={{
+      padding: '1.25rem',
+      background: 'rgba(255,255,255,0.02)',
+      borderRadius: '12px',
+      border: '1px solid rgba(255, 255, 255, 0.05)',
+      borderLeft: `4px solid ${hasVoted ? (law.voted === 'yes' ? 'hsl(var(--accent-emerald))' : 'hsl(var(--accent-red))') : 'hsl(var(--accent-purple))'}`,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.75rem'
+    }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{
+            fontSize: '0.7rem',
+            padding: '0.15rem 0.5rem',
+            borderRadius: '4px',
+            background: 'rgba(168, 85, 247, 0.15)',
+            color: 'hsl(var(--accent-purple))',
+            border: '1px solid rgba(168, 85, 247, 0.2)',
+            fontWeight: 700
+          }}>
+            {law.category}
+          </span>
+          <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))' }}>
+            Sunan: {law.proposer}
+          </span>
+        </div>
+        <div style={{
+          fontSize: '0.75rem',
+          fontWeight: 700,
+          color: isExpired ? 'hsl(var(--text-muted))' : 'hsl(var(--accent-gold))',
+          background: 'rgba(234, 179, 8, 0.06)',
+          padding: '0.25rem 0.5rem',
+          borderRadius: '4px',
+          border: '1px solid rgba(234, 179, 8, 0.15)'
+        }}>
+          ⏱️ {timeLeftStr}
+        </div>
+      </div>
+
+      <div>
+        <h4 style={{ color: 'white', fontSize: '1rem', margin: 0, fontWeight: 700 }}>
+          {law.title}
+        </h4>
+        <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-secondary))', marginTop: '0.4rem', lineHeight: '1.4' }}>
+          {law.description}
+        </p>
+      </div>
+
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        borderTop: '1px solid rgba(255,255,255,0.04)', 
+        paddingTop: '0.75rem', 
+        marginTop: '0.25rem',
+        flexWrap: 'wrap',
+        gap: '0.75rem'
+      }}>
+        {hasVoted ? (
+          <>
+            <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
+              <span style={{ color: 'hsl(var(--accent-emerald))', fontWeight: 700 }}>
+                Kabul: {law.yesVotes} Oy
+              </span>
+              <span style={{ color: 'hsl(var(--accent-red))', fontWeight: 700 }}>
+                Ret: {law.noVotes} Oy
+              </span>
+            </div>
+            <div style={{
+              fontSize: '0.8rem',
+              fontWeight: 700,
+              color: law.voted === 'yes' ? 'hsl(var(--accent-emerald))' : 'hsl(var(--accent-red))',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.25rem'
+            }}>
+              {law.voted === 'yes' ? '👍 Kabul Oyunu Kullandınız' : '👎 Ret Oyunu Kullandınız'}
+            </div>
+          </>
+        ) : isExpired ? (
+          <div style={{ fontSize: '0.8rem', color: 'hsl(var(--text-muted))', fontWeight: 700 }}>
+            🚫 Oylama süresi sona erdi.
+          </div>
+        ) : (
+          <>
+            <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))' }}>
+              {userRole === 'MILLETVEKILI' ? '* Karar için oyunuzu kullanın.' : '⚠️ Sadece milletvekilleri oy kullanabilir.'}
+            </span>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button 
+                onClick={() => {
+                  if (userRole !== 'MILLETVEKILI') {
+                    alert('Yasa tekliflerini yalnızca Milletvekilleri oylayabilir!');
+                    return;
+                  }
+                  onVoteLaw(law.id, 'no');
+                }}
+                className="btn-danger" 
+                style={{ 
+                  padding: '0.4rem 1rem', 
+                  fontSize: '0.75rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.25rem',
+                  opacity: userRole === 'MILLETVEKILI' ? 1 : 0.5,
+                  cursor: userRole === 'MILLETVEKILI' ? 'pointer' : 'not-allowed'
+                }}
+              >
+                👎 Karşı Çık (Ret)
+              </button>
+              <button 
+                onClick={() => {
+                  if (userRole !== 'MILLETVEKILI') {
+                    alert('Yasa tekliflerini yalnızca Milletvekilleri oylayabilir!');
+                    return;
+                  }
+                  onVoteLaw(law.id, 'yes');
+                }}
+                className="btn-success" 
+                style={{ 
+                  padding: '0.4rem 1rem', 
+                  fontSize: '0.75rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '0.25rem',
+                  opacity: userRole === 'MILLETVEKILI' ? 1 : 0.5,
+                  cursor: userRole === 'MILLETVEKILI' ? 'pointer' : 'not-allowed'
+                }}
+              >
+                👍 Kabul Et (Onayla)
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+});
+
+interface TravelLockOverlayProps {
+  activeTravel: {
+    startProvince: string;
+    startDistrict: string;
+    targetProvince: string;
+    targetDistrict: string;
+    endTime: number;
+    distance: number;
+    mode: 'bus' | 'car' | 'plane';
+  };
+  userCash: number;
+  onInstantTravelSkip: () => void;
+}
+
+const TravelLockOverlay = React.memo(({ activeTravel, userCash, onInstantTravelSkip }: TravelLockOverlayProps) => {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const remainingSeconds = Math.max(0, Math.ceil((activeTravel.endTime - now) / 1000));
+    if (remainingSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [activeTravel.endTime, now]);
+
+  const remainingSeconds = Math.max(0, Math.ceil((activeTravel.endTime - now) / 1000));
+  const totalDuration = activeTravel.distance;
+  const elapsedSeconds = Math.max(0, totalDuration - remainingSeconds);
+  const percent = Math.min(100, Math.max(0, (elapsedSeconds / totalDuration) * 100));
+
+  const modeEmoji = activeTravel.mode === 'plane' ? '✈️' : activeTravel.mode === 'bus' ? '🚌' : '🚗';
+  const modeLabel = activeTravel.mode === 'plane' ? 'Uçuş Gerçekleştiriliyor' : activeTravel.mode === 'bus' ? 'Otobüs Yolculuğu' : 'Özel Araç Seyahati';
+
+  return (
+    <div style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: 'rgba(5, 8, 15, 0.88)',
+      backdropFilter: 'blur(16px)',
+      WebkitBackdropFilter: 'blur(16px)',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      zIndex: 9999,
+      padding: '2rem',
+      color: 'white',
+      textAlign: 'center'
+    }}>
+      <div style={{
+        width: '100%',
+        maxWidth: '520px',
+        padding: '2.5rem',
+        borderRadius: '20px',
+        background: 'linear-gradient(135deg, rgba(20, 25, 40, 0.9) 0%, rgba(10, 12, 22, 0.95) 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(6, 182, 212, 0.15)',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '1.75rem',
+        position: 'relative',
+        overflow: 'hidden'
+      }}>
+        
+        <div style={{
+          position: 'absolute',
+          top: '-20%',
+          left: '-20%',
+          width: '140%',
+          height: '140%',
+          background: 'radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, rgba(0,0,0,0) 70%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
+        <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <span style={{ fontSize: '2.5rem', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}>{modeEmoji}</span>
+          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, background: 'linear-gradient(90deg, #3b82f6, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+            {modeLabel}...
+          </h2>
+          <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-secondary))', margin: 0 }}>
+            Şehir devletleri arasında güvenlik kontrolleri ve transit geçiş yapılıyor.
+          </p>
+        </div>
+
+        <div style={{
+          zIndex: 1,
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
+          alignItems: 'center',
+          padding: '1rem',
+          borderRadius: '12px',
+          background: 'rgba(255, 255, 255, 0.02)',
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          gap: '0.5rem'
+        }}>
+          <div>
+            <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', display: 'block', marginBottom: '0.2rem' }}>Başlangıç</span>
+            <strong style={{ fontSize: '0.9rem', color: 'white' }}>{activeTravel.startDistrict}</strong>
+            <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))', display: 'block' }}>{activeTravel.startProvince}</span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'hsl(var(--accent-cyan))' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>{activeTravel.distance} km</span>
+            <span style={{ fontSize: '0.9rem', margin: '0.15rem 0' }}>➡️</span>
+          </div>
+
+          <div>
+            <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', display: 'block', marginBottom: '0.2rem' }}>Hedef</span>
+            <strong style={{ fontSize: '0.9rem', color: 'white' }}>{activeTravel.targetDistrict}</strong>
+            <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))', display: 'block' }}>{activeTravel.targetProvince}</span>
+          </div>
+        </div>
+
+        <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <div style={{
+            height: '6px',
+            background: 'rgba(255, 255, 255, 0.05)',
+            borderRadius: '3px',
+            position: 'relative',
+            marginTop: '1.25rem',
+            marginBottom: '0.5rem'
+          }}>
+            <div style={{
+              height: '100%',
+              width: `${percent}%`,
+              background: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
+              borderRadius: '3px',
+              boxShadow: '0 0 10px rgba(6, 182, 212, 0.5)'
+            }} />
+
+            <div style={{
+              position: 'absolute',
+              top: '-16px',
+              left: `calc(${percent}% - 14px)`,
+              fontSize: '1.25rem',
+              transition: 'left 1s linear',
+              filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))'
+            }}>
+              {activeTravel.mode === 'plane' ? '✈️' : activeTravel.mode === 'bus' ? '🚌' : '🚗'}
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
+            <span style={{ color: 'hsl(var(--text-secondary))' }}>Yolculuk Oranı: %{Math.round(percent)}</span>
+            <span style={{ color: 'hsl(var(--accent-gold))', fontWeight: 700 }}>
+              Kalan Süre: {remainingSeconds >= 60 
+                ? `${Math.floor(remainingSeconds / 60)} dk ${remainingSeconds % 60} sn` 
+                : `${remainingSeconds} sn`}
+            </span>
+          </div>
+        </div>
+
+        <div style={{ zIndex: 1, borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+          <button
+            onClick={onInstantTravelSkip}
+            className="btn-success"
+            disabled={userCash < 500}
+            style={{
+              padding: '0.75rem 1.5rem',
+              fontSize: '0.9rem',
+              fontWeight: 700,
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+              boxShadow: userCash >= 500 ? '0 4px 15px rgba(16, 185, 129, 0.3)' : 'none',
+              opacity: userCash >= 500 ? 1 : 0.5,
+              cursor: userCash >= 500 ? 'pointer' : 'not-allowed',
+              border: 'none',
+              color: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.5rem',
+              transition: 'all 0.2s'
+            }}
+          >
+            ⚡ Hızlı Uçuş Kartı Kullan (₺500)
+          </button>
+          <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))' }}>
+            {userCash >= 500 
+              ? `500 ₺ ödeyerek bekleme süresini anında atlayabilirsiniz.` 
+              : `Hızlı uçuş için bakiye yetersiz. (Mevcut Nakit: ${Math.round(userCash)} ₺)`}
+          </span>
+        </div>
+
+      </div>
+    </div>
+  );
+});
+
+interface MovingLockOverlayProps {
+  activeMoving: {
+    targetProvince: string;
+    targetDistrict: string;
+    startTime: number;
+    endTime: number;
+  };
+}
+
+const MovingLockOverlay = React.memo(({ activeMoving }: MovingLockOverlayProps) => {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const remainingSeconds = Math.max(0, Math.ceil((activeMoving.endTime - now) / 1000));
+    if (remainingSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [activeMoving.endTime, now]);
+
+  const remainingSeconds = Math.max(0, Math.ceil((activeMoving.endTime - now) / 1000));
+  const totalDuration = 15 * 60;
+  const elapsedSeconds = Math.max(0, totalDuration - remainingSeconds);
+  const percent = Math.min(100, Math.max(0, (elapsedSeconds / totalDuration) * 100));
+  
+  const minutes = Math.floor(remainingSeconds / 60);
+  const seconds = remainingSeconds % 60;
+  const timeStr = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+  return (
+    <div style={{
+      position: 'fixed',
+      bottom: '24px',
+      left: '24px',
+      zIndex: 999,
+      width: '320px',
+      padding: '1.25rem',
+      borderRadius: '16px',
+      background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%)',
+      border: '1px solid rgba(168, 85, 247, 0.25)',
+      boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.15)',
+      backdropFilter: 'blur(12px)',
+      WebkitBackdropFilter: 'blur(12px)',
+      color: 'white',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '0.75rem',
+      animation: 'slideUp 0.3s ease-out'
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <div style={{
+          width: '36px',
+          height: '36px',
+          borderRadius: '50%',
+          background: 'rgba(168, 85, 247, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'hsl(var(--accent-purple))',
+          fontSize: '1.2rem'
+        }}>
+          🏠
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }}>İkametgah Taşınıyor...</div>
+          <div style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))' }}>
+            Hedef: {activeMoving.targetProvince}, {activeMoving.targetDistrict}
+          </div>
+        </div>
+        <div style={{ fontSize: '1rem', fontWeight: 'bold', fontFamily: 'monospace', color: 'hsl(var(--accent-purple))' }}>
+          {timeStr}
+        </div>
+      </div>
+
+      <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
+        <div style={{
+          width: `${percent}%`,
+          height: '100%',
+          background: 'linear-gradient(90deg, #a855f7 0%, #7c3aed 100%)',
+          borderRadius: '3px',
+          transition: 'width 0.5s ease-out'
+        }} />
+      </div>
+
+      <div style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textAlign: 'center', fontStyle: 'italic' }}>
+        Taşınma süresince şirketleriniz ve şahsi ikametgah kaydınız taşınma sürecindedir.
+      </div>
+    </div>
+  );
+});
+
 function App() {
   const [user, setUser] = useState<UserState>(() => {
     const token = localStorage.getItem('politic_token');
@@ -298,6 +756,11 @@ function App() {
   const [activeLawsSubTab, setActiveLawsSubTab] = useState<'chamber' | 'pending' | 'history'>('chamber');
   const [topLevelTab, setTopLevelTab] = useState<'personal' | 'role'>('personal');
   const [logs, setLogs] = useState<string[]>(['Karakter simülasyonu başlatıldı.', 'Cumhuriyet Kapısı açıldı.']);
+
+  const addLog = useCallback((msg: string) => {
+    const timestamp = new Date().toLocaleTimeString('tr-TR');
+    setLogs(prev => [`[${timestamp}] ${msg}`, ...prev.slice(0, 49)]);
+  }, []);
   const [activeTravel, setActiveTravel] = useState<{
     startProvince: string;
     startDistrict: string;
@@ -361,7 +824,7 @@ function App() {
     return INITIAL_ARCHIVED_LAWS;
   });
 
-  const fetchLaws = async () => {
+  const fetchLaws = useCallback(async () => {
     const token = localStorage.getItem('politic_token');
     if (!token) return;
     try {
@@ -401,7 +864,7 @@ function App() {
     } catch (err) {
       console.error('Error fetching laws:', err);
     }
-  };
+  }, []);
 
   useEffect(() => {
     if (user.isLoggedIn) {
@@ -413,12 +876,9 @@ function App() {
     }
   }, [user.isLoggedIn]);
 
-  const [timeTicker, setTimeTicker] = useState<number>(Date.now());
-
   useEffect(() => {
     const timer = setInterval(() => {
       const now = Date.now();
-      setTimeTicker(now);
 
       // Check for expired laws and archive them automatically
       const existingStr = localStorage.getItem('pending_laws');
@@ -490,15 +950,12 @@ function App() {
                 origin: { y: 0.6 }
               });
             }, 0);
-          } else {
-            setActiveTravel(travel);
           }
         } catch (e) {
           console.error(e);
         }
       } else {
-        // If activeTravel state is set but storage is empty, sync state to null
-        setActiveTravel(null);
+        setActiveTravel(prev => prev !== null ? null : prev);
       }
 
       // Check for active moving progression
@@ -522,18 +979,16 @@ function App() {
                 origin: { y: 0.6 }
               });
             }, 0);
-          } else {
-            setActiveMoving(moving);
           }
         } catch (e) {
           console.error(e);
         }
       } else {
-        setActiveMoving(null);
+        setActiveMoving(prev => prev !== null ? null : prev);
       }
     }, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [addLog]);
 
   // Sync state whenever local storage updates (e.g. from ParliamentSeatMap modal)
   useEffect(() => {
@@ -660,10 +1115,7 @@ function App() {
     }
   }, [user]);
 
-  const addLog = (msg: string) => {
-    const timestamp = new Date().toLocaleTimeString('tr-TR');
-    setLogs(prev => [`[${timestamp}] ${msg}`, ...prev.slice(0, 49)]);
-  };
+
 
   // Real-time market WebSocket, Profile sync, and Heartbeat Loop
   useEffect(() => {
@@ -817,8 +1269,7 @@ function App() {
     user.materials
   ]);
 
-  // Login Handler
-  const handleLogin = (userData: { 
+  const handleLogin = useCallback((userData: { 
     username: string; 
     characterName: string; 
     characterSurname: string; 
@@ -864,9 +1315,9 @@ function App() {
       materials: userData.materials || prev.materials
     }));
     addLog(`Vatandaş giriş yaptı: ${userData.characterName} ${userData.characterSurname}`);
-  };
+  }, [addLog]);
 
-  const handleCharacterCreationComplete = async (data: {
+  const handleCharacterCreationComplete = useCallback(async (data: {
     avatarId: string;
     isometricModelId: string;
     backstoryId: string;
@@ -891,7 +1342,6 @@ function App() {
     if (result.success) {
       const u = result.data;
       
-      // Fire confetti!
       const canvasConfetti = (await import('canvas-confetti')).default;
       canvasConfetti({
         particleCount: 150,
@@ -918,28 +1368,25 @@ function App() {
     } else {
       throw new Error(result.message || 'Karakter kaydedilemedi.');
     }
-  };
+  }, [addLog]);
 
-  // Logout Handler
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     localStorage.removeItem('politic_user_state');
     localStorage.removeItem('politic_token');
     setUser(INITIAL_USER_STATE);
     setActiveMenu('dashboard');
     setLogs(['Karakter simülasyonu kapatıldı.']);
-  };
+  }, []);
 
-  // Update Balances
-  const handleUpdateBalances = (newBalances: Partial<UserState>, logMessage: string) => {
+  const handleUpdateBalances = useCallback((newBalances: Partial<UserState>, logMessage: string) => {
     setUser(prev => ({
       ...prev,
       ...newBalances
     }));
     addLog(logMessage);
-  };
+  }, [addLog]);
 
-  // Handle Vote
-  const handleVote = (partyName: string) => {
+  const handleVote = useCallback((partyName: string) => {
     setUser(prev => ({
       ...prev,
       hasVotedThisTerm: true,
@@ -947,10 +1394,9 @@ function App() {
       politicalInfluence: prev.politicalInfluence + 50
     }));
     addLog(`Yüksek Seçim Kurulu sandığında oy kullanıldı. Tercih: ${partyName} (Nüfuz: +50)`);
-  };
+  }, [addLog]);
 
-  // Handle Travel
-  const handleTravel = (
+  const handleTravel = useCallback((
     province: string,
     district: string,
     cost: number,
@@ -996,30 +1442,18 @@ function App() {
       }));
       addLog(`✈️ Zaten ${province} Cumhuriyeti, ${district} konumundasınız.`);
     }
-  };
+  }, [user.province, user.district, addLog]);
 
-  // Gallery Purchase Handler
-  const handleBuyVehicle = (vehicleId: string, price: number) => {
-    if (user.cash < price) {
-      setAlertMsg("Aracı satın almak için yeterli paranız yok!");
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-    const vehicleNames: Record<string, string> = {
-      classic_sahin: 'Tofaş Şahin',
-      togg_suv: 'Togg T10X SUV',
-      armored_suv: 'Zırhlı Off-Road SUV',
-      vip_sedan: 'Ultra Lüks VIP Sedan'
-    };
-    const vehicleName = vehicleNames[vehicleId] || vehicleId;
-
+  const handleBuyVehicle = useCallback((vehicleId: string, price: number) => {
+    let success = true;
     setUser(prev => {
+      if (prev.cash < price) {
+        success = false;
+        return prev;
+      }
       const owned = prev.ownedVehicles || [];
       if (owned.includes(vehicleId)) {
-        setTimeout(() => {
-          setAlertMsg("Bu araca zaten sahipsiniz!");
-          setTimeout(() => setAlertMsg(null), 3000);
-        }, 0);
+        success = null as any;
         return prev;
       }
       const updated = {
@@ -1027,20 +1461,35 @@ function App() {
         cash: prev.cash - price,
         ownedVehicles: [...owned, vehicleId]
       };
+      const vehicleNames: Record<string, string> = {
+        classic_sahin: 'Tofaş Şahin',
+        togg_suv: 'Togg T10X SUV',
+        armored_suv: 'Zırhlı Off-Road SUV',
+        vip_sedan: 'Ultra Lüks VIP Sedan'
+      };
+      const vehicleName = vehicleNames[vehicleId] || vehicleId;
       setTimeout(() => addLog(`🚗 Galeri: ${vehicleName} satın alındı! (Gider: -${price.toLocaleString('tr-TR')} ₺)`), 0);
       return updated;
     });
-  };
+    setTimeout(() => {
+      if (!success && success !== null) {
+        setAlertMsg("Aracı satın almak için yeterli paranız yok!");
+        setTimeout(() => setAlertMsg(null), 3000);
+      } else if (success === null) {
+        setAlertMsg("Bu araca zaten sahipsiniz!");
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
 
-  // Gas Station Purchase Handler
-  const handleBuyFuel = (liters: number, pricePerLiter: number) => {
+  const handleBuyFuel = useCallback((liters: number, pricePerLiter: number) => {
     const cost = Math.round(liters * pricePerLiter);
-    if (user.cash < cost) {
-      setAlertMsg("Benzin satın almak için yeterli paranız yok!");
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
+    let hasCash = true;
     setUser(prev => {
+      if (prev.cash < cost) {
+        hasCash = false;
+        return prev;
+      }
       const updated = {
         ...prev,
         cash: prev.cash - cost,
@@ -1049,30 +1498,43 @@ function App() {
       setTimeout(() => addLog(`⛽ Benzin İstasyonu: ${liters} litre benzin alındı! (Gider: -${cost.toLocaleString('tr-TR')} ₺)`), 0);
       return updated;
     });
-  };
+    setTimeout(() => {
+      if (!hasCash) {
+        setAlertMsg("Benzin satın almak için yeterli paranız yok!");
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
 
-  // Handle Travel Skip instantly by buying a plane ticket (₺500)
-  const handleInstantTravelSkip = () => {
+  const handleInstantTravelSkip = useCallback(() => {
     if (!activeTravel) return;
-    if (user.cash < 500) {
-      setAlertMsg("Hızlı uçuş kartı almak için yeterli nakdiniz yok! (Gerekli: ₺500)");
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-
+    let hasCash = true;
+    
     const destinationProvince = activeTravel.targetProvince;
     const destinationDistrict = activeTravel.targetDistrict;
 
-    setUser(prev => ({
-      ...prev,
-      cash: prev.cash - 500,
-      province: destinationProvince,
-      district: destinationDistrict
-    }));
+    setUser(prev => {
+      if (prev.cash < 500) {
+        hasCash = false;
+        return prev;
+      }
+      return {
+        ...prev,
+        cash: prev.cash - 500,
+        province: destinationProvince,
+        district: destinationDistrict
+      };
+    });
 
-    localStorage.removeItem('active_travel');
-    setActiveTravel(null);
     setTimeout(() => {
+      if (!hasCash) {
+        setAlertMsg("Hızlı uçuş kartı almak için yeterli nakdiniz yok! (Gerekli: ₺500)");
+        setTimeout(() => setAlertMsg(null), 3000);
+        return;
+      }
+
+      localStorage.removeItem('active_travel');
+      setActiveTravel(null);
       addLog(`✈️ Hızlı Uçuş Kartı Kullanıldı: Seyahat süresi atlandı ve ${destinationProvince} Cumhuriyeti, ${destinationDistrict} konumuna anında ulaşıldı! (Gider: -500 ₺)`);
       confetti({
         particleCount: 120,
@@ -1080,10 +1542,9 @@ function App() {
         origin: { y: 0.6 }
       });
     }, 0);
-  };
+  }, [activeTravel, addLog]);
 
-  // Handle Move Residence
-  const handleMoveResidence = (province: string, district: string, cost: number, energyCost: number) => {
+  const handleMoveResidence = useCallback((province: string, district: string, cost: number, energyCost: number) => {
     setUser(prev => ({
       ...prev,
       cash: prev.cash - cost,
@@ -1120,9 +1581,9 @@ function App() {
       localStorage.setItem('politic_residency_applications', JSON.stringify(updated));
       return updated;
     });
-  };
+  }, [user.characterName, user.characterSurname, user.politicalRole, user.province, addLog]);
 
-  const handleApproveResidency = (appId: string) => {
+  const handleApproveResidency = useCallback((appId: string) => {
     setResidencyApplications(prev => {
       const updated = prev.map(app => {
         if (app.id === appId) {
@@ -1146,9 +1607,9 @@ function App() {
       localStorage.setItem('politic_residency_applications', JSON.stringify(updated));
       return updated;
     });
-  };
+  }, [user.characterName, user.characterSurname, addLog]);
 
-  const handleRejectResidency = (appId: string) => {
+  const handleRejectResidency = useCallback((appId: string) => {
     setResidencyApplications(prev => {
       const updated = prev.map(app => {
         if (app.id === appId) {
@@ -1164,85 +1625,108 @@ function App() {
       localStorage.setItem('politic_residency_applications', JSON.stringify(updated));
       return updated;
     });
-  };
+  }, [user.characterName, user.characterSurname, addLog]);
 
-  // Buy item from store
-  const handleBuyItem = (item: MarketplaceItem) => {
-    if (user.cash < item.price) {
-      setAlertMsg('Yetersiz nakit para!');
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-
-    const updatedUser = { ...user };
-    updatedUser.cash -= item.price;
-
-    if (item.replenishType === 'hunger') {
-      updatedUser.hunger = Math.min(100, updatedUser.hunger + item.replenishValue);
-    } else if (item.replenishType === 'thirst') {
-      updatedUser.thirst = Math.min(100, updatedUser.thirst + item.replenishValue);
-    } else if (item.replenishType === 'energy') {
-      updatedUser.energy = Math.min(100, updatedUser.energy + item.replenishValue);
-    } else if (item.replenishType === 'health') {
-      updatedUser.health = Math.min(100, updatedUser.health + item.replenishValue);
-    } else if (item.replenishType === 'cure') {
-      updatedUser.isSick = false;
-      updatedUser.health = Math.min(100, updatedUser.health + item.replenishValue);
-    }
-
-    setUser(updatedUser);
-    addLog(`Marketten ${item.name} satın alındı (${item.price} ₺).`);
-  };
-
-  // Emtia Borsası - Alım/Satım İşlemleri
-  const handleBuyCommodity = (id: string, amount: number, price: number) => {
-    const totalCost = Math.round(amount * price * 100) / 100;
-    if (user.cash < totalCost) {
-      setAlertMsg(`Yetersiz nakit para! Gerekli: ₺${totalCost.toLocaleString('tr-TR')}`);
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-
-    setUser(prev => ({
-      ...prev,
-      cash: Math.round((prev.cash - totalCost) * 100) / 100,
-      materials: {
-        ...prev.materials,
-        [id]: (prev.materials[id as keyof typeof prev.materials] || 0) + amount
-      }
-    }));
-    addLog(`📈 Borsa: ${amount} birim ${id.toUpperCase()} satın alındı. (Birim Fiyatı: ${price} ₺, Toplam Gider: ${totalCost} ₺)`);
-  };
-
-  const handleSellCommodity = (id: string, amount: number, price: number) => {
-    const currentAmount = user.materials[id as keyof typeof user.materials] || 0;
-    if (currentAmount < amount) {
-      setAlertMsg(`Yetersiz emtia envanteri! Mevcut: ${currentAmount} birim, İstenen: ${amount} birim`);
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-
-    const totalRevenue = Math.round(amount * price * 100) / 100;
-    setUser(prev => ({
-      ...prev,
-      cash: Math.round((prev.cash + totalRevenue) * 100) / 100,
-      materials: {
-        ...prev.materials,
-        [id]: Math.max(0, currentAmount - amount)
-      }
-    }));
-    addLog(`📉 Borsa: ${amount} birim ${id.toUpperCase()} satıldı. (Birim Fiyatı: ${price} ₺, Toplam Gelir: ${totalRevenue} ₺)`);
-  };
-
-  // Upgrade / Purchase Factory (Mobile App Feature!)
-  const handleUpgradeFactory = (type: 'coal' | 'auto' | 'defense', cost: number, companyName?: string) => {
-    if (user.cash < cost) {
-      setAlertMsg('Yetersiz nakit para!');
-      setTimeout(() => setAlertMsg(null), 3000);
-      return;
-    }
-
+  const handleBuyItem = useCallback((item: MarketplaceItem) => {
+    let hasCash = true;
     setUser(prev => {
+      if (prev.cash < item.price) {
+        hasCash = false;
+        return prev;
+      }
+      const updatedUser = { ...prev };
+      updatedUser.cash -= item.price;
+
+      if (item.replenishType === 'hunger') {
+        updatedUser.hunger = Math.min(100, updatedUser.hunger + item.replenishValue);
+      } else if (item.replenishType === 'thirst') {
+        updatedUser.thirst = Math.min(100, updatedUser.thirst + item.replenishValue);
+      } else if (item.replenishType === 'energy') {
+        updatedUser.energy = Math.min(100, updatedUser.energy + item.replenishValue);
+      } else if (item.replenishType === 'health') {
+        updatedUser.health = Math.min(100, updatedUser.health + item.replenishValue);
+      } else if (item.replenishType === 'cure') {
+        updatedUser.isSick = false;
+        updatedUser.health = Math.min(100, updatedUser.health + item.replenishValue);
+      }
+      setTimeout(() => addLog(`Marketten ${item.name} satın alındı (${item.price} ₺).`), 0);
+      return updatedUser;
+    });
+
+    setTimeout(() => {
+      if (!hasCash) {
+        setAlertMsg('Yetersiz nakit para!');
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
+
+  const handleBuyCommodity = useCallback((id: string, amount: number, price: number) => {
+    const totalCost = Math.round(amount * price * 100) / 100;
+    let hasCash = true;
+    setUser(prev => {
+      if (prev.cash < totalCost) {
+        hasCash = false;
+        return prev;
+      }
+      const updated = {
+        ...prev,
+        cash: Math.round((prev.cash - totalCost) * 100) / 100,
+        materials: {
+          ...prev.materials,
+          [id]: (prev.materials[id as keyof typeof prev.materials] || 0) + amount
+        }
+      };
+      setTimeout(() => addLog(`📈 Borsa: ${amount} birim ${id.toUpperCase()} satın alındı. (Birim Fiyatı: ${price} ₺, Toplam Gider: ${totalCost} ₺)`), 0);
+      return updated;
+    });
+
+    setTimeout(() => {
+      if (!hasCash) {
+        setAlertMsg(`Yetersiz nakit para! Gerekli: ₺${totalCost.toLocaleString('tr-TR')}`);
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
+
+  const handleSellCommodity = useCallback((id: string, amount: number, price: number) => {
+    let hasInventory = true;
+    let currentAmountVal = 0;
+    setUser(prev => {
+      const currentAmount = prev.materials[id as keyof typeof prev.materials] || 0;
+      if (currentAmount < amount) {
+        hasInventory = false;
+        currentAmountVal = currentAmount;
+        return prev;
+      }
+      const totalRevenue = Math.round(amount * price * 100) / 100;
+      const updated = {
+        ...prev,
+        cash: Math.round((prev.cash + totalRevenue) * 100) / 100,
+        materials: {
+          ...prev.materials,
+          [id]: Math.max(0, currentAmount - amount)
+        }
+      };
+      setTimeout(() => addLog(`📉 Borsa: ${amount} birim ${id.toUpperCase()} satıldı. (Birim Fiyatı: ${price} ₺, Toplam Gelir: ${totalRevenue} ₺)`), 0);
+      return updated;
+    });
+
+    setTimeout(() => {
+      if (!hasInventory) {
+        setAlertMsg(`Yetersiz emtia envanteri! Mevcut: ${currentAmountVal} birim, İstenen: ${amount} birim`);
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
+
+  const handleUpgradeFactory = useCallback((type: 'coal' | 'auto' | 'defense', cost: number, companyName?: string) => {
+    let hasCash = true;
+    setUser(prev => {
+      if (prev.cash < cost) {
+        hasCash = false;
+        return prev;
+      }
       const updated = { ...prev };
       updated.cash -= cost;
       if (type === 'coal') {
@@ -1276,12 +1760,16 @@ function App() {
       }
       return updated;
     });
-  };
 
+    setTimeout(() => {
+      if (!hasCash) {
+        setAlertMsg('Yetersiz nakit para!');
+        setTimeout(() => setAlertMsg(null), 3000);
+      }
+    }, 0);
+  }, [addLog]);
 
-
-  // Vote on a pending law proposal
-  const handleVoteLaw = async (lawId: string | number, voteType: 'yes' | 'no') => {
+  const handleVoteLaw = useCallback(async (lawId: string | number, voteType: 'yes' | 'no') => {
     const token = localStorage.getItem('politic_token');
     if (!token) return;
 
@@ -1325,7 +1813,7 @@ function App() {
       setAlertMsg('Bağlantı hatası: Oy verilemedi.');
       setTimeout(() => setAlertMsg(null), 3000);
     }
-  };
+  }, [fetchLaws, addLog]);
 
   // Simulating Life ticks (depletion of hunger, thirst, energy & PASSIVE INCOME from factories)
   useEffect(() => {
@@ -1425,259 +1913,18 @@ function App() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       
       {/* Travel Lock Overlay */}
-      {activeTravel && (() => {
-        const remainingSeconds = Math.max(0, Math.ceil((activeTravel.endTime - Date.now()) / 1000));
-        const totalDuration = activeTravel.distance;
-        const elapsedSeconds = Math.max(0, totalDuration - remainingSeconds);
-        const percent = Math.min(100, Math.max(0, (elapsedSeconds / totalDuration) * 100));
-
-        return (
-          <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(5, 8, 15, 0.88)',
-            backdropFilter: 'blur(16px)',
-            WebkitBackdropFilter: 'blur(16px)',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 9999,
-            padding: '2rem',
-            color: 'white',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              width: '100%',
-              maxWidth: '520px',
-              padding: '2.5rem',
-              borderRadius: '20px',
-              background: 'linear-gradient(135deg, rgba(20, 25, 40, 0.9) 0%, rgba(10, 12, 22, 0.95) 100%)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), 0 0 40px rgba(6, 182, 212, 0.15)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '1.75rem',
-              position: 'relative',
-              overflow: 'hidden'
-            }}>
-              
-              {/* Subtle background glow */}
-              <div style={{
-                position: 'absolute',
-                top: '-20%',
-                left: '-20%',
-                width: '140%',
-                height: '140%',
-                background: 'radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, rgba(0,0,0,0) 70%)',
-                pointerEvents: 'none',
-                zIndex: 0
-              }} />
-
-              {/* Title Block */}
-              {(() => {
-                const modeEmoji = activeTravel.mode === 'plane' ? '✈️' : activeTravel.mode === 'bus' ? '🚌' : '🚗';
-                const modeLabel = activeTravel.mode === 'plane' ? 'Uçuş Gerçekleştiriliyor' : activeTravel.mode === 'bus' ? 'Otobüs Yolculuğu' : 'Özel Araç Seyahati';
-                return (
-                  <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <span style={{ fontSize: '2.5rem', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }}>{modeEmoji}</span>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 800, letterSpacing: '-0.02em', margin: 0, background: 'linear-gradient(90deg, #3b82f6, #06b6d4)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                      {modeLabel}...
-                    </h2>
-                    <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-secondary))', margin: 0 }}>
-                      Şehir devletleri arasında güvenlik kontrolleri ve transit geçiş yapılıyor.
-                    </p>
-                  </div>
-                );
-              })()}
-
-              {/* Destination/Departure Info Card */}
-              <div style={{
-                zIndex: 1,
-                display: 'grid',
-                gridTemplateColumns: '1fr auto 1fr',
-                alignItems: 'center',
-                padding: '1rem',
-                borderRadius: '12px',
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-                gap: '0.5rem'
-              }}>
-                <div>
-                  <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', display: 'block', marginBottom: '0.2rem' }}>Başlangıç</span>
-                  <strong style={{ fontSize: '0.9rem', color: 'white' }}>{activeTravel.startDistrict}</strong>
-                  <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))', display: 'block' }}>{activeTravel.startProvince}</span>
-                </div>
-
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', color: 'hsl(var(--accent-cyan))' }}>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 600 }}>{activeTravel.distance} km</span>
-                  <span style={{ fontSize: '0.9rem', margin: '0.15rem 0' }}>➡️</span>
-                </div>
-
-                <div>
-                  <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', display: 'block', marginBottom: '0.2rem' }}>Hedef</span>
-                  <strong style={{ fontSize: '0.9rem', color: 'white' }}>{activeTravel.targetDistrict}</strong>
-                  <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))', display: 'block' }}>{activeTravel.targetProvince}</span>
-                </div>
-              </div>
-
-              {/* Progress bar track & animating vehicle emoji */}
-              <div style={{ zIndex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <div style={{
-                  height: '6px',
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  borderRadius: '3px',
-                  position: 'relative',
-                  marginTop: '1.25rem',
-                  marginBottom: '0.5rem'
-                }}>
-                  {/* Glowing progress line */}
-                  <div style={{
-                    height: '100%',
-                    width: `${percent}%`,
-                    background: 'linear-gradient(90deg, #3b82f6, #06b6d4)',
-                    borderRadius: '3px',
-                    boxShadow: '0 0 10px rgba(6, 182, 212, 0.5)'
-                  }} />
-
-                  {/* Animated emoji vehicle overlay */}
-                  <div style={{
-                    position: 'absolute',
-                    top: '-16px',
-                    left: `calc(${percent}% - 14px)`,
-                    fontSize: '1.25rem',
-                    transition: 'left 1s linear',
-                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.5))'
-                  }}>
-                    {activeTravel.mode === 'plane' ? '✈️' : activeTravel.mode === 'bus' ? '🚌' : '🚗'}
-                  </div>
-                </div>
-
-                {/* Remaining Duration Clock */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
-                  <span style={{ color: 'hsl(var(--text-secondary))' }}>Yolculuk Oranı: %{Math.round(percent)}</span>
-                  <span style={{ color: 'hsl(var(--accent-gold))', fontWeight: 700 }}>
-                    Kalan Süre: {remainingSeconds >= 60 
-                      ? `${Math.floor(remainingSeconds / 60)} dk ${remainingSeconds % 60} sn` 
-                      : `${remainingSeconds} sn`}
-                  </span>
-                </div>
-              </div>
-
-              {/* Premium instant skip option */}
-              <div style={{ zIndex: 1, borderTop: '1px solid rgba(255, 255, 255, 0.06)', paddingTop: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                <button
-                  onClick={handleInstantTravelSkip}
-                  className="btn-success"
-                  disabled={user.cash < 500}
-                  style={{
-                    padding: '0.75rem 1.5rem',
-                    fontSize: '0.9rem',
-                    fontWeight: 700,
-                    borderRadius: '10px',
-                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-                    boxShadow: user.cash >= 500 ? '0 4px 15px rgba(16, 185, 129, 0.3)' : 'none',
-                    opacity: user.cash >= 500 ? 1 : 0.5,
-                    cursor: user.cash >= 500 ? 'pointer' : 'not-allowed',
-                    border: 'none',
-                    color: 'white',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '0.5rem',
-                    transition: 'all 0.2s'
-                  }}
-                >
-                  ⚡ Hızlı Uçuş Kartı Kullan (₺500)
-                </button>
-                <span style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))' }}>
-                  {user.cash >= 500 
-                    ? `500 ₺ ödeyerek bekleme süresini anında atlayabilirsiniz.` 
-                    : `Hızlı uçuş için bakiye yetersiz. (Mevcut Nakit: ${Math.round(user.cash)} ₺)`}
-                </span>
-              </div>
-
-            </div>
-          </div>
-        );
-      })()}
+      {activeTravel && (
+        <TravelLockOverlay
+          activeTravel={activeTravel}
+          userCash={user.cash}
+          onInstantTravelSkip={handleInstantTravelSkip}
+        />
+      )}
 
       {/* Floating Residency Relocation Progress Card */}
-      {activeMoving && (() => {
-        const remainingSeconds = Math.max(0, Math.ceil((activeMoving.endTime - Date.now()) / 1000));
-        const totalDuration = 15 * 60; // 15 minutes = 900 seconds
-        const elapsedSeconds = Math.max(0, totalDuration - remainingSeconds);
-        const percent = Math.min(100, Math.max(0, (elapsedSeconds / totalDuration) * 100));
-        
-        const minutes = Math.floor(remainingSeconds / 60);
-        const seconds = remainingSeconds % 60;
-        const timeStr = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-
-        return (
-          <div style={{
-            position: 'fixed',
-            bottom: '24px',
-            left: '24px',
-            zIndex: 999,
-            width: '320px',
-            padding: '1.25rem',
-            borderRadius: '16px',
-            background: 'linear-gradient(135deg, rgba(30, 27, 75, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%)',
-            border: '1px solid rgba(168, 85, 247, 0.25)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(168, 85, 247, 0.15)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            color: 'white',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '0.75rem',
-            animation: 'slideUp 0.3s ease-out'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-              <div style={{
-                width: '36px',
-                height: '36px',
-                borderRadius: '50%',
-                background: 'rgba(168, 85, 247, 0.15)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: 'hsl(var(--accent-purple))',
-                fontSize: '1.2rem'
-              }}>
-                🏠
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'white' }}>İkametgah Taşınıyor...</div>
-                <div style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))' }}>
-                  Hedef: {activeMoving.targetProvince}, {activeMoving.targetDistrict}
-                </div>
-              </div>
-              <div style={{ fontSize: '1rem', fontWeight: 'bold', fontFamily: 'monospace', color: 'hsl(var(--accent-purple))' }}>
-                {timeStr}
-              </div>
-            </div>
-
-            {/* Progress Bar */}
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.06)', borderRadius: '3px', overflow: 'hidden' }}>
-              <div style={{
-                width: `${percent}%`,
-                height: '100%',
-                background: 'linear-gradient(90deg, #a855f7 0%, #7c3aed 100%)',
-                borderRadius: '3px',
-                transition: 'width 0.5s ease-out'
-              }} />
-            </div>
-
-            <div style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', textAlign: 'center', fontStyle: 'italic' }}>
-              Taşınma süresince şirketleriniz ve şahsi ikametgah kaydınız taşınma sürecindedir.
-            </div>
-          </div>
-        );
-      })()}
+      {activeMoving && (
+        <MovingLockOverlay activeMoving={activeMoving} />
+      )}
       
       {activeMenu !== 'wiki' && (
         <>
@@ -2484,160 +2731,14 @@ function App() {
                       🗳️ Şu anda oylama bekleyen herhangi bir kanun teklifi bulunmuyor. Meclis salonu üzerinden teklif sunabilirsiniz.
                     </div>
                   ) : (
-                    pendingLaws.map(law => {
-                      const diff = law.timestamp - timeTicker;
-                      const isExpired = diff <= 0;
-                      
-                      let timeLeftStr = 'Süre Doldu';
-                      if (!isExpired) {
-                        const hours = Math.floor(diff / (1000 * 60 * 60));
-                        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-                        timeLeftStr = `${hours}s ${minutes}d ${seconds}s kaldı`;
-                      }
-                      
-                      const hasVoted = law.voted !== null;
-                      
-                      return (
-                        <div key={law.id} style={{
-                          padding: '1.25rem',
-                          background: 'rgba(255,255,255,0.02)',
-                          borderRadius: '12px',
-                          border: '1px solid rgba(255, 255, 255, 0.05)',
-                          borderLeft: `4px solid ${hasVoted ? (law.voted === 'yes' ? 'hsl(var(--accent-emerald))' : 'hsl(var(--accent-red))') : 'hsl(var(--accent-purple))'}`,
-                          display: 'flex',
-                          flexDirection: 'column',
-                          gap: '0.75rem'
-                        }}>
-                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                              <span style={{
-                                fontSize: '0.7rem',
-                                padding: '0.15rem 0.5rem',
-                                borderRadius: '4px',
-                                background: 'rgba(168, 85, 247, 0.15)',
-                                color: 'hsl(var(--accent-purple))',
-                                border: '1px solid rgba(168, 85, 247, 0.2)',
-                                fontWeight: 700
-                              }}>
-                                {law.category}
-                              </span>
-                              <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))' }}>
-                                Sunan: {law.proposer}
-                              </span>
-                            </div>
-                            <div style={{
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              color: isExpired ? 'hsl(var(--text-muted))' : 'hsl(var(--accent-gold))',
-                              background: 'rgba(234, 179, 8, 0.06)',
-                              padding: '0.25rem 0.5rem',
-                              borderRadius: '4px',
-                              border: '1px solid rgba(234, 179, 8, 0.15)'
-                            }}>
-                              ⏱️ {timeLeftStr}
-                            </div>
-                          </div>
-
-                          <div>
-                            <h4 style={{ color: 'white', fontSize: '1rem', margin: 0, fontWeight: 700 }}>
-                              {law.title}
-                            </h4>
-                            <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-secondary))', marginTop: '0.4rem', lineHeight: '1.4' }}>
-                              {law.description}
-                            </p>
-                          </div>
-
-                          <div style={{ 
-                            display: 'flex', 
-                            justifyContent: 'space-between', 
-                            alignItems: 'center', 
-                            borderTop: '1px solid rgba(255,255,255,0.04)', 
-                            paddingTop: '0.75rem', 
-                            marginTop: '0.25rem',
-                            flexWrap: 'wrap',
-                            gap: '0.75rem'
-                          }}>
-                            {hasVoted ? (
-                              <>
-                                <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem' }}>
-                                  <span style={{ color: 'hsl(var(--accent-emerald))', fontWeight: 700 }}>
-                                    Kabul: {law.yesVotes} Oy
-                                  </span>
-                                  <span style={{ color: 'hsl(var(--accent-red))', fontWeight: 700 }}>
-                                    Ret: {law.noVotes} Oy
-                                  </span>
-                                </div>
-                                <div style={{
-                                  fontSize: '0.8rem',
-                                  fontWeight: 700,
-                                  color: law.voted === 'yes' ? 'hsl(var(--accent-emerald))' : 'hsl(var(--accent-red))',
-                                  display: 'flex',
-                                  alignItems: 'center',
-                                  gap: '0.25rem'
-                                }}>
-                                  {law.voted === 'yes' ? '👍 Kabul Oyunu Kullandınız' : '👎 Ret Oyunu Kullandınız'}
-                                </div>
-                              </>
-                            ) : isExpired ? (
-                              <div style={{ fontSize: '0.8rem', color: 'hsl(var(--text-muted))', fontWeight: 700 }}>
-                                🚫 Oylama süresi sona erdi.
-                              </div>
-                            ) : (
-                              <>
-                                <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))' }}>
-                                  {user.politicalRole === 'MILLETVEKILI' ? '* Karar için oyunuzu kullanın.' : '⚠️ Sadece milletvekilleri oy kullanabilir.'}
-                                </span>
-                                <div style={{ display: 'flex', gap: '0.5rem' }}>
-                                  <button 
-                                    onClick={() => {
-                                      if (user.politicalRole !== 'MILLETVEKILI') {
-                                        alert('Yasa tekliflerini yalnızca Milletvekilleri oylayabilir!');
-                                        return;
-                                      }
-                                      handleVoteLaw(law.id, 'no');
-                                    }}
-                                    className="btn-danger" 
-                                    style={{ 
-                                      padding: '0.4rem 1rem', 
-                                      fontSize: '0.75rem', 
-                                      display: 'flex', 
-                                      alignItems: 'center', 
-                                      gap: '0.25rem',
-                                      opacity: user.politicalRole === 'MILLETVEKILI' ? 1 : 0.5,
-                                      cursor: user.politicalRole === 'MILLETVEKILI' ? 'pointer' : 'not-allowed'
-                                    }}
-                                  >
-                                    👎 Karşı Çık (Ret)
-                                  </button>
-                                  <button 
-                                    onClick={() => {
-                                      if (user.politicalRole !== 'MILLETVEKILI') {
-                                        alert('Yasa tekliflerini yalnızca Milletvekilleri oylayabilir!');
-                                        return;
-                                      }
-                                      handleVoteLaw(law.id, 'yes');
-                                    }}
-                                    className="btn-success" 
-                                    style={{ 
-                                      padding: '0.4rem 1rem', 
-                                      fontSize: '0.75rem', 
-                                      display: 'flex', 
-                                      alignItems: 'center', 
-                                      gap: '0.25rem',
-                                      opacity: user.politicalRole === 'MILLETVEKILI' ? 1 : 0.5,
-                                      cursor: user.politicalRole === 'MILLETVEKILI' ? 'pointer' : 'not-allowed'
-                                    }}
-                                  >
-                                    👍 Kabul Et (Onayla)
-                                  </button>
-                                </div>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })
+                    pendingLaws.map(law => (
+                      <LawItem
+                        key={law.id}
+                        law={law}
+                        userRole={user.politicalRole}
+                        onVoteLaw={handleVoteLaw}
+                      />
+                    ))
                   )}
                 </div>
               ) : (

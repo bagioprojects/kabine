@@ -14,7 +14,7 @@ interface PoliticsHubProps {
   onVote: (partyName: string) => void;
 }
 
-export const PoliticsHub: React.FC<PoliticsHubProps> = ({ politics }) => {
+const PoliticsHubComponent: React.FC<PoliticsHubProps> = ({ politics }) => {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'CUMHURBASKANI': return 'linear-gradient(135deg, hsl(var(--accent-gold)) 0%, #d97706 100%)';
@@ -92,3 +92,5 @@ export const PoliticsHub: React.FC<PoliticsHubProps> = ({ politics }) => {
     </div>
   );
 };
+
+export const PoliticsHub = React.memo(PoliticsHubComponent);

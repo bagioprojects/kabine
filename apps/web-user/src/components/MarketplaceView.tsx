@@ -103,7 +103,7 @@ interface MarketplaceViewProps {
   onBuyFuel?: (liters: number, pricePerLiter: number) => void;
 }
 
-export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
+const MarketplaceViewComponent: React.FC<MarketplaceViewProps> = ({
   user,
   commodities,
   onBuyItem,
@@ -737,3 +737,5 @@ export const MarketplaceView: React.FC<MarketplaceViewProps> = ({
       </div>
   );
 };
+
+export const MarketplaceView = React.memo(MarketplaceViewComponent);
