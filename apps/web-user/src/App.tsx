@@ -2300,33 +2300,56 @@ function App() {
                 <GlassCard style={{ borderLeft: '4px solid hsl(var(--accent-gold))', display: 'flex', flexDirection: 'column', gap: '1rem', background: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(15, 23, 42, 0.1) 100%)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 style={{ fontSize: '1.25rem', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800 }}>
-                      🏢 Endüstriyel Şirket Karteli
+                      🏢 Şirketlerim
                     </h3>
                     <button 
                       onClick={() => setActiveMenu('enterprise')}
                       style={{ padding: '0.35rem 0.75rem', fontSize: '0.75rem', background: 'rgba(245, 158, 11, 0.15)', border: '1px solid rgba(245, 158, 11, 0.3)', color: 'hsl(var(--accent-gold))', borderRadius: '4px', fontWeight: 700 }}
                     >
-                      Karteli Yönet
+                      Şirketleri Yönet
                     </button>
                   </div>
 
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
-                    <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
-                      <span style={{ fontSize: '1.8rem' }}>⛏️</span>
-                      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Kömür Madeni</div>
-                      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-gold))', fontWeight: 700 }}>Seviye {user.coalMineLevel || 0}</span>
+                  {(!user.coalMineLevel && !user.autoFactoryLevel && !user.defenseFactoryLevel) ? (
+                    <div style={{ 
+                      display: 'flex', 
+                      flexDirection: 'column', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      padding: '1.5rem 1rem', 
+                      background: 'rgba(0,0,0,0.15)', 
+                      border: '1px dashed rgba(255,255,255,0.1)', 
+                      borderRadius: '8px',
+                      textAlign: 'center',
+                      gap: '0.5rem'
+                    }}>
+                      <span style={{ fontSize: '1.8rem' }}>🏢</span>
+                      <div style={{ color: 'white', fontWeight: 600, fontSize: '0.9rem' }}>
+                        Henüz aktif bir şirketiniz bulunmamaktadır.
+                      </div>
+                      <div style={{ color: 'hsl(var(--text-secondary))', fontSize: '0.75rem', maxWidth: '280px', lineHeight: '1.4' }}>
+                        Şirketleri Yönet panelinden ilk madeninizi veya fabrikanızı kurarak üretime başlayabilirsiniz.
+                      </div>
                     </div>
-                    <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
-                      <span style={{ fontSize: '1.8rem' }}>🚗</span>
-                      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Oto Fabrikası</div>
-                      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-cyan))', fontWeight: 700 }}>Seviye {user.autoFactoryLevel || 0}</span>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.75rem' }}>
+                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
+                        <span style={{ fontSize: '1.8rem' }}>⛏️</span>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Kömür Madeni</div>
+                        <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-gold))', fontWeight: 700 }}>Seviye {user.coalMineLevel || 0}</span>
+                      </div>
+                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
+                        <span style={{ fontSize: '1.8rem' }}>🚗</span>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Oto Fabrikası</div>
+                        <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-cyan))', fontWeight: 700 }}>Seviye {user.autoFactoryLevel || 0}</span>
+                      </div>
+                      <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
+                        <span style={{ fontSize: '1.8rem' }}>🛡️</span>
+                        <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Savunma Sanayii</div>
+                        <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-purple))', fontWeight: 700 }}>Seviye {user.defenseFactoryLevel || 0}</span>
+                      </div>
                     </div>
-                    <div style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '0.75rem', textAlign: 'center' }}>
-                      <span style={{ fontSize: '1.8rem' }}>🛡️</span>
-                      <div style={{ fontWeight: 700, fontSize: '0.85rem', color: 'white', marginTop: '0.25rem' }}>Savunma Sanayii</div>
-                      <span style={{ fontSize: '0.7rem', color: 'hsl(var(--accent-purple))', fontWeight: 700 }}>Seviye {user.defenseFactoryLevel || 0}</span>
-                    </div>
-                  </div>
+                  )}
                 </GlassCard>
               </div>
 
