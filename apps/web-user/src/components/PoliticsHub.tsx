@@ -1,6 +1,7 @@
 import React from 'react';
 import { Award, Users, Megaphone } from 'lucide-react';
 import { GlassCard } from './GlassCard';
+import { getRoleLabel } from '../App';
 
 interface PoliticsHubProps {
   politics: {
@@ -48,7 +49,7 @@ export const PoliticsHub: React.FC<PoliticsHubProps> = ({ politics }) => {
               color: 'white',
               boxShadow: '0 4px 12px rgba(0,0,0,0.2)'
             }}>
-              {politics.politicalRole}
+              {getRoleLabel(politics.politicalRole)}
             </div>
           </div>
 

@@ -41,6 +41,19 @@ import { ParliamentSeatMap } from './components/ParliamentSeatMap';
 import { WikiView } from './components/WikiView';
 import { OrganizationView } from './components/OrganizationView';
 
+export const getRoleLabel = (role: string): string => {
+  switch (role) {
+    case 'VATANDAS': return 'VATANDAŞ';
+    case 'MUHTAR': return 'MUHTAR';
+    case 'BELEDIYE_BASKANI': return 'BELEDİYE BAŞKANI';
+    case 'MILLETVEKILI': return 'MİLLETVEKİLİ';
+    case 'BAKAN': return 'BAKAN';
+    case 'CUMHURBASKANI': return 'CUMHURBAŞKANI';
+    case 'GARNIZON_KOMUTANI': return 'GARNİZON KOMUTANI';
+    default: return role || '';
+  }
+};
+
 interface UserState {
   isLoggedIn: boolean;
   username: string;
@@ -1707,7 +1720,7 @@ function App() {
                     color: 'hsl(var(--accent-cyan))',
                     border: '1px solid rgba(6, 182, 212, 0.2)'
                   }}>
-                    {user.politicalRole}
+                    {getRoleLabel(user.politicalRole)}
                   </span>
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'hsl(var(--text-secondary))', display: 'flex', flexDirection: 'column', gap: '0.1rem' }}>
@@ -2233,7 +2246,7 @@ function App() {
                 <GlassCard style={{ borderLeft: '4px solid hsl(var(--accent-cyan))', display: 'flex', flexDirection: 'column', gap: '1rem', background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.05) 0%, rgba(15, 23, 42, 0.1) 100%)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <h3 style={{ fontSize: '1.25rem', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800 }}>
-                      🚗 Milli Garajım ve Filom
+                      Garajım
                     </h3>
                     <span style={{ fontSize: '0.8rem', color: 'hsl(var(--accent-gold))', fontWeight: 700 }}>
                       ⛽ Toplam Yakıt: {user.fuelLiters} Lt

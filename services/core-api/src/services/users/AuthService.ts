@@ -39,8 +39,8 @@ export class AuthService {
     const newUser = new User();
     newUser.username = normalizedUsername;
     newUser.phoneNumber = normalizedPhone;
-    newUser.characterName = payload.characterName!.trim();
-    newUser.characterSurname = payload.characterSurname!.trim();
+    newUser.characterName = capitalizeTurkish(payload.characterName!.trim());
+    newUser.characterSurname = capitalizeTurkish(payload.characterSurname!.trim());
     newUser.passwordHash = hashedPassword;
     
     // Set default starting values
@@ -206,3 +206,31 @@ export class AuthService {
     return jwt.encode(payload, JWT_SECRET);
   }
 }
+
+function capitalizeTurkish(str: string): string {
+  if (!str) return '';
+  return str
+    .split(/\s+/)
+    .map(word => {
+      if (!word) return '';
+      // Capitalize first letter with Turkish rules
+      const firstChar = word.charAt(0);
+      let firstUpper = firstChar;
+      if (firstChar === 'i') firstUpper = 'İ';
+      else if (firstChar === 'ı') firstUpper = 'I';
+      else firstUpper = firstChar.toLocaleUpperCase('tr-TR');
+
+      // Lowercase remaining letters with Turkish rules
+      const rest = word.slice(1);
+      let restLower = '';
+      for (let i = 0; i < rest.length; i++) {
+        const c = rest.charAt(i);
+        if (c === 'I') restLower += 'ı';
+        else if (c === 'İ') restLower += 'i';
+        else restLower += c.toLocaleLowerCase('tr-TR');
+      }
+      return firstUpper + restLower;
+    })
+    .join(' ');
+}
+

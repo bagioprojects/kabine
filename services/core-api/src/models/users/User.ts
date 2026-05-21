@@ -188,4 +188,40 @@ export class User {
       }
     }
   }
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  formatNames() {
+    if (this.characterName) {
+      this.characterName = capitalizeTurkish(this.characterName.trim());
+    }
+    if (this.characterSurname) {
+      this.characterSurname = capitalizeTurkish(this.characterSurname.trim());
+    }
+  }
+}
+
+function capitalizeTurkish(str: string): string {
+  if (!str) return '';
+  return str
+    .split(/\s+/)
+    .map(word => {
+      if (!word) return '';
+      const firstChar = word.charAt(0);
+      let firstUpper = firstChar;
+      if (firstChar === 'i') firstUpper = 'İ';
+      else if (firstChar === 'ı') firstUpper = 'I';
+      else firstUpper = firstChar.toLocaleUpperCase('tr-TR');
+
+      const rest = word.slice(1);
+      let restLower = '';
+      for (let i = 0; i < rest.length; i++) {
+        const c = rest.charAt(i);
+        if (c === 'I') restLower += 'ı';
+        else if (c === 'İ') restLower += 'i';
+        else restLower += c.toLocaleLowerCase('tr-TR');
+      }
+      return firstUpper + restLower;
+    })
+    .join(' ');
 }
