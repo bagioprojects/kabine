@@ -13,7 +13,7 @@ if (hostUri) {
   }
 }
 
-export const BASE_URL = `http://${localIp}:3000`;
+export const BASE_URL = process.env.EXPO_PUBLIC_API_URL || `http://${localIp}:3000`;
 export const API_BASE = `${BASE_URL}/api/v1`;
 
 const axiosClient = axios.create({
